@@ -1,17 +1,18 @@
-from enum import Enum
-
+from Models.ImageResource import ImageResource
 from Models.Interactive import Interactive
+import os
 
+# no fucking clue why this won't inherit the ImageResource class correctly.
+# driving me actually mad, fuck it for now.
+class Player(Interactive, ImageResource):
+    def __init__(self, file_name, **kwargs):
+        super().__init__(**kwargs)
 
-class Direction(Enum):
-    UP = 0
-    DOWN = 1
-    LEFT = 2
-    RIGHT = 3
+        self.image = ImageResource()
 
-class Player(Interactive):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def move(self, direction):
+    def move(self, direction, a, d):
         pass
+    def get_image(self):
+        return self.image.get_image()
+
+

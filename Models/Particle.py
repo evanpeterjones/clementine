@@ -1,6 +1,6 @@
 import random
 
-from Models.Visible import Visible
+from Physics.Visible import Visible
 
 
 def rand():

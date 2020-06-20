@@ -35,6 +35,11 @@ class Clock:
         def __set_next_frame(self):
             self.__nextFrame += self.__delta
 
+        def __update_cycles(self, cycles_this_frame):
+            self.__averageFreeCycles = (self.__averageFreeCycles + cycles_this_frame) / 2
+
+        # PUBLIC PROPERTIES
+
         def next_frame_ready(self):
             """
             Call at the end of a game loop after updating models before updating the display
@@ -47,9 +52,6 @@ class Clock:
 
             self.__set_next_frame()
             self.__update_cycles(cycles)
-
-        def __update_cycles(self, cycles_this_frame):
-            self.__averageFreeCycles = (self.__averageFreeCycles + cycles_this_frame) / 2
 
         @property
         def AverageCycles(self):

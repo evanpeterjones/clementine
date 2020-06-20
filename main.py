@@ -58,15 +58,15 @@ def GameLoop(func):
 
 
 class View:
-    def __init__(self, window_size=(900, 500), c="See ya next time", header="CLEM", player=Player()):
+    def __init__(self, window_size=(900, 500), c="See ya next time", header="CLEM", player=None):
+        pygame.display.set_caption(header)  # set header text
+
         self.clock = pygame.time.Clock()
         self.WINDOW_SIZE = window_size  # default will need to be changed through conf file
         self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
         self.close_message = c
         self.player = player
 
-        pygame.init()  # initialize screen
-        pygame.display.set_caption(header)  # set header text
 
     def exit(self):
         pygame.quit()
@@ -90,8 +90,7 @@ class StartScreen(View):
 
         # [location, velocity, timer, color]
         self.particles = []
-        self.player = Player(x=200, y=200)
-        self.playerImg = pygame.image.load(os.path.join('resources','character.png'))
+        self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
 
     @staticmethod
     def update_particles(screen, arr_particles):
@@ -104,14 +103,15 @@ class StartScreen(View):
     @GameLoop
     def run(self):
 
+        self.screen.fill((255, 255, 255))
+
         xpos, ypos = self.player.get_position()
 
-        #self.screen.blit(self.playerImg, (x, y))
-
-        self.screen.fill((0, 0, 0))
         self.particles.append(
             Particle(random.randint(4, 10), x=xpos, y=ypos))
         self.update_particles(self.screen, self.particles)
+        self.player.get_position()
+        self.screen.blit(self.player.get_image(), (xpos, ypos))
 
         return True
 
@@ -126,6 +126,7 @@ class Play(View):
 
 
 if __name__ == "__main__":
+    pygame.init()  # initialize screen
     GAME = StartScreen()
     GAME.run()
     print("yo, we outie")
