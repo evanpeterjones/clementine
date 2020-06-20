@@ -1,6 +1,7 @@
 import pygame
 import random
 import sys
+import os
 from pygame.locals import *
 
 from Models.Particle import Particle
@@ -90,7 +91,7 @@ class StartScreen(View):
         # [location, velocity, timer, color]
         self.particles = []
         self.player = Player(x=200, y=200)
-        self.playerImg = pygame.image.load('resources\character.png')
+        self.playerImg = pygame.image.load(os.path.join('resources','character.png'))
 
     @staticmethod
     def update_particles(screen, arr_particles):
