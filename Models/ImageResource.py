@@ -1,3 +1,5 @@
+from resources.Colors import FG
+
 import pygame
 import os
 
@@ -12,7 +14,10 @@ class ImageResource:
         self.FramePointer = 0
         self.NumFrames = 1
 
-        img = pygame.image.load(os.path.join('resources', file_name))
+        if os.path.exists(os.path.join('resources', file_name)):
+            img = pygame.image.load(os.path.join('resources', file_name))
+        else:
+            img = pygame.image.load(os.path.join('resources', F_IMG_ERROR))
 
         if img is not None:
             self.sheet = img.convert()
@@ -30,11 +35,11 @@ class ImageResource:
         "Loads image from x,y,x+offset,y+offset"
         rect = pygame.Rect(rectangle)
         image = pygame.Surface(rect.size).convert()
-        image.blit(self.sheet, (0, 0), rect)
+        image.blit(self.sheet, (0,0), rect)
 
         if colorkey is not None:
             if colorkey is -1:
-                colorkey = image.get_at((0, 0))
+                colorkey = image.get_at((0,0))
             image.set_colorkey(colorkey, pygame.RLEACCEL)
         return image
 

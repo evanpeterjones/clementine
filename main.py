@@ -7,6 +7,7 @@ from pygame.locals import *
 from Models.Particle import Particle
 from Models.Player import Player
 from System.Clock import Clock
+from resources.Colors import BG, FG
 
 clock = Clock()
 
@@ -25,6 +26,8 @@ def GameLoop(func):
         while running:
             # call our game code
             running = func(*args, **kwargs)
+
+            pygame.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -90,6 +93,11 @@ class StartScreen(View):
 
         # [location, velocity, timer, color]
         self.particles = []
+        self.particles2 = []
+        self.particles3 = []
+        self.particles4 = []
+        self.xp = 0
+        self.yp = 0
         self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
 
     @staticmethod
@@ -103,13 +111,19 @@ class StartScreen(View):
     @GameLoop
     def run(self):
 
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(BG)
 
         xpos, ypos = self.player.get_position()
+        self.xp += 1
+        self.yp += 1
 
         self.particles.append(
             Particle(random.randint(4, 10), x=xpos, y=ypos))
+        self.particles2.append(
+            Particle(random.randint(4, 10), x=self.xp, y=self.yp))
+
         self.update_particles(self.screen, self.particles)
+        self.update_particles(self.screen, self.particles2)
         self.player.get_position()
         self.screen.blit(self.player.get_image(), (xpos, ypos))
 
