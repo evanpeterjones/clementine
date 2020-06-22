@@ -32,6 +32,12 @@ class Visible:
         self.x_pos = x
         self.y_pos = y
 
+    def set_y_vel(self, yvel):
+        self.y_vel = yvel
+
+    def set_x_vel(self, xvel):
+        self.x_vel = xvel
+
     def update(self):
         """progresses to next frame"""
 
@@ -39,9 +45,17 @@ class Visible:
         self.x_pos += self.x_vel
         self.y_pos += self.y_vel
 
-        # Update Velocity
-        self.x_vel += self.x_acc
-        self.y_vel += self.y_acc
+        if self.x_vel != 0 and abs(self.x_vel) < self.terminal:
+            if self.x_vel > 0:
+                self.x_vel += self.x_acc
+            if self.x_vel < 0:
+                self.x_vel -= self.x_acc
+
+        if self.y_vel != 0 and abs(self.y_vel) < self.terminal:
+            if self.y_vel > 0:
+                self.y_vel += self.y_acc
+            if self.y_vel < 0:
+                self.y_vel -= self.y_acc
 
         # Update IMG to next character Frame
         #self.update_image()

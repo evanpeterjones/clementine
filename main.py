@@ -42,14 +42,25 @@ def GameLoop(func):
                         pygame.quit()
                         sys.exit()
                     if event.key == K_w:
-                        args[0].player.move(0, -1)
+                        args[0].player.set_y_vel(-5)
                     if event.key == K_a:
-                        args[0].player.move(-1, 0)
+                        args[0].player.set_x_vel(-5)
                     if event.key == K_s:
-                        args[0].player.move(0, 1)
+                        args[0].player.set_y_vel(5)
                     if event.key == K_d:
-                        args[0].player.move(1, 0)
+                        args[0].player.set_x_vel(5)
+                if event.type == KEYUP:
+                    if event.key == K_w:
+                        args[0].player.set_y_vel(0)
+                    if event.key == K_a:
+                        args[0].player.set_x_vel(0)
+                    if event.key == K_s:
+                        args[0].player.set_y_vel(0)
+                    if event.key == K_d:
+                        args[0].player.set_x_vel(0)
 
+
+            args[0].player.update()
             clock.next_frame_ready()
             pygame.display.update()
             print("cycles available: " + str(clock.AverageCycles))
@@ -58,7 +69,7 @@ def GameLoop(func):
 
 
 class View:
-    def __init__(self, window_size=(900, 500), c="See ya next time", header="CLEM", player=None):
+    def __init__(self, window_size=(1200, 720), c="See ya next time", header="CLEM", player=None):
         pygame.display.set_caption(header)  # set header text
 
         self.clock = pygame.time.Clock()
@@ -90,7 +101,7 @@ class StartScreen(View):
 
         # [location, velocity, timer, color]
         self.particles = []
-        self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
+        self.player = Player(x=200, y=200, file_name="asdf.png", x_acc=1, y_acc=1)
 
     @staticmethod
     def update_particles(screen, arr_particles):
@@ -107,10 +118,8 @@ class StartScreen(View):
 
         xpos, ypos = self.player.get_position()
 
-        self.particles.append(
-            Particle(random.randint(4, 10), x=xpos, y=ypos))
+        self.particles.append(Particle(random.randint(4, 10), x=xpos, y=ypos))
         self.update_particles(self.screen, self.particles)
-        self.player.get_position()
         self.screen.blit(self.player.get_image(), (xpos, ypos))
 
         return True
