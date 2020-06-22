@@ -1,12 +1,13 @@
 import pygame
 import random
 import sys
-import os
+
 from pygame.locals import *
 
 from Models.Particle import Particle
 from Models.Player import Player
 from System.Clock import Clock
+from resources.Colors import BG, FG
 
 clock = Clock()
 
@@ -25,6 +26,8 @@ def GameLoop(func):
         while running:
             # call our game code
             running = func(*args, **kwargs)
+
+            pygame.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -99,9 +102,10 @@ class StartScreen(View):
     def __init__(self):
         super().__init__(c="peace out", header="Start Screen")
 
-        # [location, velocity, timer, color]
         self.particles = []
         self.player = Player(x=200, y=200, file_name="asdf.png", x_acc=1, y_acc=1)
+        #self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
+
 
     @staticmethod
     def update_particles(screen, arr_particles):
@@ -114,12 +118,18 @@ class StartScreen(View):
     @GameLoop
     def run(self):
 
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(BG)
 
         xpos, ypos = self.player.get_position()
 
         self.particles.append(Particle(random.randint(4, 10), x=xpos, y=ypos))
         self.update_particles(self.screen, self.particles)
+
+        self.particles.append(
+            Particle(random.randint(4, 10), x=xpos, y=ypos))
+
+        self.update_particles(self.screen, self.particles)
+        self.player.get_position()
         self.screen.blit(self.player.get_image(), (xpos, ypos))
 
         return True
