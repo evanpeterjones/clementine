@@ -103,6 +103,7 @@ class StartScreen(View):
 
         self.particles = []
         self.player = Player(x=200, y=200, file_name="coffeepot_static_1.png", x_acc=1, y_acc=1)
+#        self.player = Player(x=200, y=200, file_name="steve_standing_1.png", x_acc=1, y_acc=1)
         #self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
 
 
