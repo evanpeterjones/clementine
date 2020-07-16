@@ -8,10 +8,11 @@ class Player(Interactive, ImageResource):
     def __init__(self, file_name, **kwargs):
         super().__init__(**kwargs)
 
-        self.image = ImageResource()
+        self.image = ImageResource(file_name)
 
     def move(self, direction, a, d):
         pass
+
     def get_image(self):
         return self.image.get_image()
 

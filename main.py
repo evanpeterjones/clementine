@@ -81,7 +81,6 @@ class View:
         self.close_message = c
         self.player = player
 
-
     def exit(self):
         pygame.quit()
         print(self.close_message)
@@ -103,7 +102,7 @@ class StartScreen(View):
         super().__init__(c="peace out", header="Start Screen")
 
         self.particles = []
-        self.player = Player(x=200, y=200, file_name="asdf.png", x_acc=1, y_acc=1)
+        self.player = Player(x=200, y=200, file_name="coffeepot_static_1.png", x_acc=1, y_acc=1)
         #self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
 
 
@@ -114,6 +113,14 @@ class StartScreen(View):
             pygame.draw.circle(screen, x.color, x.get_position(), x.width)
             if x.exists():
                 arr_particles.remove(x)
+
+                # below might be better?
+                '''for i, p in sorted(enumerate(arr_particles), reverse=True):
+            p.update_particle()
+            pygame.draw.circle(screen, p.color, p.get_position(), p.width)
+            if p.exists():
+                arr_particles.pop(i)
+'''
 
     @GameLoop
     def run(self):

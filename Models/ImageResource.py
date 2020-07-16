@@ -14,13 +14,11 @@ class ImageResource:
         self.FramePointer = 0
         self.NumFrames = 1
 
-        if os.path.exists(os.path.join('resources', file_name)):
-            img = pygame.image.load(os.path.join('resources', file_name))
-        else:
-            img = pygame.image.load(os.path.join('resources', F_IMG_ERROR))
+        # self.Frames.append(
+        self.img = pygame.image.load(os.path.join('resources', file_name))
 
-        if img is not None:
-            self.sheet = img.convert()
+        if self.img is not None:
+            self.sheet = self.img.convert()
             rect = self.sheet.get_rect().size
 
             if self.sheet is not None:
@@ -28,18 +26,17 @@ class ImageResource:
                 self.NumFrames = len(self.Frames)
 
     def get_image(self):
-        if self.Frames is not None:
-            return self.Frames[self.FramePointer]
+        return self.img #self.Frames[self.FramePointer]
 
     def __image_at(self, rectangle, colorkey):
         "Loads image from x,y,x+offset,y+offset"
         rect = pygame.Rect(rectangle)
         image = pygame.Surface(rect.size).convert()
-        image.blit(self.sheet, (0,0), rect)
+        # image.blit(self.sheet, (0,0), rect)
 
         if colorkey is not None:
             if colorkey is -1:
-                colorkey = image.get_at((0,0))
+                colorkey = image.get_at((0, 0))
             image.set_colorkey(colorkey, pygame.RLEACCEL)
         return image
 
