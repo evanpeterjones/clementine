@@ -1,3 +1,4 @@
+import pygame
 import random
 
 from Physics.Visible import Visible

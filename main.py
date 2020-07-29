@@ -6,11 +6,12 @@ from pygame.locals import *
 
 from Models.Particle import Particle
 from Models.Player import Player
+from Models.Sprite import Sprite
 from System.Clock import Clock
 from resources.Colors import BG, FG
 
 clock = Clock()
-
+g_vel = 10
 
 def GameLoop(func):
     """
@@ -38,32 +39,34 @@ def GameLoop(func):
                     pass
                 if event.type == MOUSEMOTION:
                     x, y = pygame.mouse.get_pos()
-                    args[0].player.set_position(x, y)
+
+                    [i.set_position(x, y) for i in args[0].elements]
+
                 if event.type == KEYDOWN:
                     key_down = True
                     if event.key == K_ESCAPE:
                         pygame.quit()
                         sys.exit()
                     if event.key == K_w:
-                        args[0].player.set_y_vel(-5)
+                        [i.set_y_vel(- (g_vel)) for i in args[0].elements]
                     if event.key == K_a:
-                        args[0].player.set_x_vel(-5)
+                        [i.set_x_vel(- (g_vel)) for i in args[0].elements]
                     if event.key == K_s:
-                        args[0].player.set_y_vel(5)
+                        [i.set_y_vel(g_vel) for i in args[0].elements]
                     if event.key == K_d:
-                        args[0].player.set_x_vel(5)
+                        [i.set_x_vel(g_vel) for i in args[0].elements]
                 if event.type == KEYUP:
                     if event.key == K_w:
-                        args[0].player.set_y_vel(0)
+                        [i.set_y_vel(0) for i in args[0].elements]
                     if event.key == K_a:
-                        args[0].player.set_x_vel(0)
+                        [i.set_x_vel(0) for i in args[0].elements]
                     if event.key == K_s:
-                        args[0].player.set_y_vel(0)
+                        [i.set_y_vel(0) for i in args[0].elements]
                     if event.key == K_d:
-                        args[0].player.set_x_vel(0)
+                        [i.set_x_vel(0) for i in args[0].elements]
 
 
-            args[0].player.update()
+            #args[0].player.update()
             clock.next_frame_ready()
             pygame.display.update()
             print("cycles available: " + str(clock.AverageCycles))
@@ -72,15 +75,14 @@ def GameLoop(func):
 
 
 class View:
-    def __init__(self, window_size=(1200, 720), c="See ya next time", header="CLEM", player=None):
+    def __init__(self, window_size=(1200, 720), c="See ya next time", header="CLEM"):
         pygame.display.set_caption(header)  # set header text
 
         self.clock = pygame.time.Clock()
         self.WINDOW_SIZE = window_size  # default will need to be changed through conf file
         self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
         self.close_message = c
-        self.player = player
-
+        self.elements = []
 
     def exit(self):
         pygame.quit()
@@ -102,35 +104,18 @@ class StartScreen(View):
     def __init__(self):
         super().__init__(c="peace out", header="Start Screen")
 
-        self.particles = []
-        self.player = Player(x=200, y=200, file_name="steve_standing_1.png", x_acc=1, y_acc=1)
-        #self.player = Player(x=200, y=200, file_name='steve_standing_1.png')
-
-
-    @staticmethod
-    def update_particles(screen, arr_particles):
-        for x in arr_particles:
-            x.update_particle()
-            pygame.draw.circle(screen, x.color, x.get_position(), x.width)
-            if x.exists():
-                arr_particles.remove(x)
+        self.elements.append(Player(x=200, y=200, file_name="steve_standing_1.png", x_acc=1, y_acc=1, screen=self.screen))
+        self.elements.append(Sprite(screen=self.screen))
 
     @GameLoop
     def run(self):
 
         self.screen.fill(BG)
 
-        xpos, ypos = self.player.get_position()
+        for element in self.elements:
+            element.update()
 
-        self.particles.append(Particle(random.randint(4, 10), x=xpos, y=ypos))
-        self.update_particles(self.screen, self.particles)
-
-        self.particles.append(
-            Particle(random.randint(4, 10), x=xpos, y=ypos))
-
-        self.update_particles(self.screen, self.particles)
-        self.player.get_position()
-        self.screen.blit(self.player.get_image(), (xpos, ypos))
+        self.screen.blit(self.elements[0].get_image(), (200, 200))
 
         return True
 

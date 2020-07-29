@@ -7,7 +7,7 @@ counter-intuitive for a base class, this could be done differently, but whatever
 
 
 class Visible:
-    def __init__(self, x=0, y=0, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=10):
+    def __init__(self, x=0, y=0, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=10, screen=None):
 
         # POSITION
         self.x_pos = x
@@ -24,6 +24,9 @@ class Visible:
         # TERMINAL VELOCITY
         self.terminal = term
         # ^need to determine a good terminal velocity
+
+        # SCREEN REFERENCE: IDK IF THIS IS A GOOD IDEA??
+        self.screen = screen
 
     def get_position(self):
         return [self.x_pos, self.y_pos]
@@ -57,5 +60,3 @@ class Visible:
             if self.y_vel < 0:
                 self.y_vel -= self.y_acc
 
-        # Update IMG to next character Frame
-        #self.update_image()
