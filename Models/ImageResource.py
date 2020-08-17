@@ -7,23 +7,28 @@ F_IMG_ERROR = "none_img_1.png"
 
 
 class SpriteSheet:
-    def __init__(self, filename):
+    def __init__(self, filename=F_IMG_ERROR, image_count=1):
         try:
-            self.sheet = pygame.image.load(filename).convert()
+            self.image_count = image_count
+            self.sheet = pygame.image.load('resources' + os.path.sep + filename).convert()
+            self.dimensions = (self.sheet.get_size()[0] / self.image_count, self.sheet.get_size()[1])
+
         except:
             print("file not found: " + filename)
 
     # Load a specific image from a specific rectangle
     def image_at(self, rectangle, colorkey=None):
         "Loads image from x,y,x+offset,y+offset"
-        rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
-        image.blit(self.sheet, (0, 0), rect)
-        if colorkey is not None:
-            if colorkey is -1:
-                colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
-        return image
+        if self.sheet is not None:
+            rect = pygame.Rect(rectangle)
+            image = pygame.Surface(rect.size).convert()
+            image.blit(self.sheet, (0, 0), rectangle)
+            if colorkey is not None:
+                if colorkey is -1:
+                    colorkey = image.get_at((0, 0))
+                image.set_colorkey(colorkey, pygame.RLEACCEL)
+            return image
+        return None
 
     # Load a whole bunch of images and return them as a list
     def images_at(self, rects, colorkey=None):
@@ -31,41 +36,58 @@ class SpriteSheet:
         return [self.image_at(rect, colorkey) for rect in rects]
 
     # Load a whole strip of images
-    def load_strip(self, rect, image_count, colorkey=None):
+    def load_strip(self, colorkey=None):
         "Loads a strip of images and returns them as a list"
-        tups = [(rect[0] + rect[2] * x, rect[1], rect[2], rect[3])
-                for x in range(image_count)]
+        tups = [(self.dimensions[0] * x, 0, self.dimensions[0], self.dimensions[1])
+                for x in range(self.image_count)]
         return self.images_at(tups, colorkey)
 
 
+def parse_file_dsl(file_descriptor: str, sheet: list) -> dict:
+    res = {}
+    for i, keypress in enumerate(file_descriptor):
+        if keypress in res.keys():
+            res[keypress].append(sheet[i])
+        else:
+            res[keypress] = [sheet[i]]
+    return res
+
+
 class ImageResource:
-    def __init__(self, file_name: str = F_IMG_ERROR, *args, **kwargs):
-        self.NumFrames = int(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
-        self.sheet = SpriteSheet(file_name)
-        self.Frames = self.sheet.load_strip((0, ), self.NumFrames)
+    def __init__(self, file_name, count_frames: int = 6, * args, **kwargs):
+
+        self.NumFrames = len(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
+        file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
+        self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
         self.FramePointer = 0
+        self.FramesSinceUpdate = 0
+        self.FramesBetweenUpdate = count_frames
+
+        self.KeyDown = 'w'
 
     def get_image(self):
-        return self.Frames[self.FramePointer]
+        # self.next_frame()
+        return self.Frames[self.KeyDown][self.FramePointer]
 
-    def __image_at(self, rectangle, colorkey):
-        "Loads image from x,y,x+offset,y+offset"
-        rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
-        # image.blit(self.sheet, (0,0), rect)
+    def ready_next(self):
+        self.FramesSinceUpdate += 1
 
-        if colorkey is not None:
-            if colorkey is -1:
-                colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
-        return image
+        if self.FramesSinceUpdate >= self.FramesBetweenUpdate:
+            self.FramesSinceUpdate = 0
+            return True
+        return False
 
-    def __images_at(self, rects, colorkey):
-        "Loads multiple images, supply a list of coordinates"
-        return [self.__image_at(rect, colorkey) for rect in rects]
+    def next_frame(self):
+        if self.ready_next():
+            self.FramePointer = (self.FramePointer + 1) % len(self.Frames[self.KeyDown])
 
-    def __load_strip(self, rect: tuple, image_count: int, colorkey=None):
-        "Loads a strip of images and returns them as a list"
-        width = rect[0] / image_count
-        tups = [(width * x, rect[1], width, rect[1]) for x in range(image_count)]
-        return self.__images_at(tups, colorkey)
+    def set_key_down(self, key='-', update = False):
+        self.KeyDown = key
+        if update:
+            # honestly don't know how I'm going to do this in the end
+            self.FramePointer = 0
+
+'''
+realized file_names should 
+'''
+# sswsddddddddxxxxww

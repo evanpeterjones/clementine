@@ -83,6 +83,7 @@ class View:
         self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
         self.close_message = c
         self.elements = []
+#        self.player = player
 
     def exit(self):
         pygame.quit()
@@ -104,8 +105,9 @@ class StartScreen(View):
     def __init__(self):
         super().__init__(c="peace out", header="Start Screen")
 
-        self.elements.append(Player(x=200, y=200, file_name="steve_standing_1.png", x_acc=1, y_acc=1, screen=self.screen))
-        self.elements.append(Sprite(screen=self.screen))
+        self.elements.append(Player(x=200, y=200, file_name="character_sswsddddddddxxxxww.png", x_acc=1, y_acc=1, screen=self.screen))
+        self.elements.append(Sprite(count=4, screen=self.screen))
+        self.particles = []
 
     @GameLoop
     def run(self):

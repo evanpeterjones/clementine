@@ -41,12 +41,12 @@ class Visible:
     def set_x_vel(self, xvel):
         self.x_vel = xvel
 
-    def update(self):
+    def update(self, x_fric=0, y_fric=0):
         """progresses to next frame"""
 
         # Update Position
-        self.x_pos += self.x_vel
-        self.y_pos += self.y_vel
+        self.x_pos += (self.x_vel - x_fric)
+        self.y_pos += (self.y_vel - y_fric)
 
         if self.x_vel != 0 and abs(self.x_vel) < self.terminal:
             if self.x_vel > 0:
@@ -60,3 +60,5 @@ class Visible:
             if self.y_vel < 0:
                 self.y_vel -= self.y_acc
 
+    def draw(self):
+        pass

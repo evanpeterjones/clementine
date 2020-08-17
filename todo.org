@@ -1,0 +1,26 @@
+* clementine (pygame wrapper)
+** DONE System
+*** DONE Clock
+multithreaded clock DONE! yeeyee
+** Models
+*** ImageResource
+**** DONE fix image loading
+**** DONE load sprite sheet
+fix error: 'tuple index out of range'
+**** DONE programmatically cycle
+**** TODO take keyboard input
+**** TODO fix dsl for file_name
+*** AudioResource
+*** Particle
+Just need to implement more particle types
+
+*** Interactive
+**** TODO Object Detection 
+would cause n^2 check each cycle for all interactive entities
+err on the side of simplicity over efficiency for now
+** Physics
+*** TODO Direction
+**** TODO Move Motion Logic here
+*** TODO Force
+**** TODO Mass * Acc Does this need a class? 
+*** TODO Mass

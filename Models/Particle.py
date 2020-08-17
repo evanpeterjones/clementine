@@ -36,8 +36,11 @@ class Particle(Visible):
         self.timer -= 0.1
         self.width = self.width - 1 if self.width > 0 else 0
 
-    def exists(self):
+    def not_exists(self):
         return self.timer <= 0
+
+    def draw(self):
+        pygame.draw.circle(self.screen, self.color, self.get_position(), self.width)
 
     @staticmethod
     def random_color():
