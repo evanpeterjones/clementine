@@ -5,6 +5,7 @@ import sys
 from pygame.locals import *
 
 from Models.Particle import Particle
+from System.Dialogue import Dialogue
 from Models.Player import Player
 from Models.Sprite import Sprite
 from System.Clock import Clock
@@ -12,6 +13,8 @@ from resources.Colors import BG, FG
 
 clock = Clock()
 g_vel = 10
+
+#window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 def GameLoop(func):
     """
@@ -104,10 +107,15 @@ class StartScreen(View):
 
     def __init__(self):
         super().__init__(c="peace out", header="Start Screen")
-
-        self.elements.append(Player(x=200, y=200, file_name="character_sswsddddddddxxxxww.png", x_acc=1, y_acc=1, screen=self.screen))
-        self.elements.append(Sprite(count=4, screen=self.screen))
+        self.elements.append(Player(x=200, y=200, file_name="Images/character_sswsddddddddxxxxww.png", x_acc=1, y_acc=1, screen=self.screen))
+        self.elements.append(Sprite(count=2, screen=self.screen))
         self.particles = []
+        self.music = open("resources/Music/space.mp3")
+        self.dialogue = Dialogue()
+        pygame.mixer.music.load(self.music)
+        pygame.mixer.music.play(-1)
+
+        pygame.display.update()
 
     @GameLoop
     def run(self):
@@ -118,6 +126,7 @@ class StartScreen(View):
             element.update()
 
         self.screen.blit(self.elements[0].get_image(), (200, 200))
+        self.dialogue.update(self.screen)
 
         return True
 

@@ -5,7 +5,7 @@ from Models.Interactive import Interactive
 # no fucking clue why this won't inherit the ImageResource class correctly.
 # driving me actually mad, fuck it for now.
 class Player(Interactive, ImageResource):
-    def __init__(self, file_name, **kwargs):
+    def __init__(self, file_name="", **kwargs):
         super().__init__(**kwargs)
 
         self.image = ImageResource(file_name)
