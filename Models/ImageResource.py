@@ -1,5 +1,6 @@
-from resources.Colors import FG
+from resources.Colors import FG, BG
 
+import pygame.locals as pl
 import pygame
 import os
 
@@ -42,14 +43,34 @@ class SpriteSheet:
                 for x in range(self.image_count)]
         return self.images_at(tups, colorkey)
 
+def get_pygame_key_from_character(kp_str:str='x'):
+    if kp_str == 'w':
+        return pl.K_w
+    if kp_str == 'a':
+        return pl.K_a
+    if kp_str == 'd':
+        return pl.K_d
+    if kp_str == 's':
+        return pl.K_s
+    # default 
+    if kp_str == 'x':
+        return pl.K_x
+
 
 def parse_file_dsl(file_descriptor: str, sheet: list) -> dict:
     res = {}
+    ''' another shitty thing I learned about Python, 
+    if you call res.keys() inside the loop, it only calls this once
+    and never again, for 'efficiency'
+    bitch I want it to do what I tell it to do
+    How about you just make your language better :?
+    '''
     for i, keypress in enumerate(file_descriptor):
-        if keypress in res.keys():
-            res[keypress].append(sheet[i])
-        else:
-            res[keypress] = [sheet[i]]
+        res[get_pygame_key_from_character(keypress)] = [sheet[i]]
+    for i, kp in enumerate(file_descriptor):
+        res[get_pygame_key_from_character(kp)].append(sheet[i])            
+
+        
     return res
 
 
@@ -63,30 +84,25 @@ class ImageResource:
         self.FramesSinceUpdate = 0
         self.FramesBetweenUpdate = count_frames
 
-        self.KeyDown = 'w'
+        self.K_def = pl.K_x
+        self.Key = self.K_def
+        self.pressed = False
+        print(self.Frames)
 
     def get_image(self):
-        # self.next_frame()
-        #Todo: fix this so it's not constantly cycling
-        return self.Frames[self.KeyDown][self.FramePointer]
+        return self.Frames[self.Key][self.FramePointer]
 
-    def ready_next(self):
-        self.FramesSinceUpdate += 1
-
-        if self.FramesSinceUpdate >= self.FramesBetweenUpdate:
-            self.FramesSinceUpdate = 0
-            return True
-        return False
+    def set_key_down(self, key, d):
+        self.Key = key if (key in self.Frames.keys()) else self.K_def
+        self.pressed = d
 
     def next_frame(self):
-        if self.ready_next():
-            self.FramePointer = (self.FramePointer + 1) % len(self.Frames[self.KeyDown])
+        self.FramesSinceUpdate += 1
+        if self.FramesSinceUpdate >= self.FramesBetweenUpdate:
+            self.FramesSinceUpdate = 0
+            #Todo: fix this so it's not constantly cycling
+            self.FramePointer = (self.FramePointer + 1) % len(self.Frames[self.Key])
 
-    def set_key_down(self, key='-', update = False):
-        self.KeyDown = key
-        if update:
-            # honestly don't know how I'm going to do this in the end
-            self.FramePointer = 0
 
 '''
 realized file_names should be like this

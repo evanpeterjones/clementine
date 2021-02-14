@@ -6,7 +6,7 @@ counter-intuitive for a base class, this could be done differently, but whatever
 """
 
 class Visible():
-    def __init__(self, x=0, y=0, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=10, screen=None):
+    def __init__(self, x=0, y=0, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, screen=None):
 
         # POSITION
         self.x_pos = x
@@ -26,7 +26,7 @@ class Visible():
 
         # SCREEN REFERENCE: IDK IF THIS IS A GOOD IDEA??
         self.screen = screen
-        self.g_vel = 3
+        self.g_vel = 1
 
     def key(self, key, keydown=False):
         '''

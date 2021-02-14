@@ -7,7 +7,6 @@ class Interactive(Visible):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-
     def no_collisions(self, all_items):
         '''
         we only want to call this when an object has moved

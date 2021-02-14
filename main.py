@@ -29,7 +29,7 @@ def GameLoop(func):
 
         while running:
             # call our game code
-            running = func(*args, **kwargs, position=pygame.mouse.get_pos())
+            running = func(*args, **kwargs)
 
             # make cursor invisible
             pygame.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
@@ -66,7 +66,7 @@ def GameLoop(func):
 
             clock.next_frame_ready()
             pygame.display.update()
-            print("cycles available: " + str(clock.AverageCycles))
+            #print("cycles available: " + str(clock.AverageCycles))
 
     return internalLoop
 
@@ -94,16 +94,17 @@ class View:
         pygame.display.set_caption(header)
 
 
-class StartScreen(View):
+class Play(View):
     """
     Present Start Screen and all Animations
     """
 
     def __init__(self):
         super().__init__(c="peace out", header="Start Screen")
-
-        self.elements.append(Player(x=200, y=200,  x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
+        
+        # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Sprite(count=2, screen=self.screen))
+        self.elements.append(Player(x=200, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
@@ -115,9 +116,8 @@ class StartScreen(View):
 
     @GameLoop
     def run(self, position=(200,200)):
-
         self.screen.fill(BG)
-        self.screen.blit(self.elements[0].get_image(), position)
+        self.screen.blit(self.elements[1].get_image(), self.elements[1].get_position())
 
         # Todo: time element, need a clock in the corner
         # Todo: Todo-list, schedule on the screen :?
@@ -130,14 +130,14 @@ class StartScreen(View):
         return True
 
 class Pause(View):
-    def __init__(self)
+    def __init__(self):
         super().__init__(c="Yeet", header="Paused")
 
     @GameLoop
     def run(self):
         return True
 
-class Play(View):
+class StartScreen(View):
     def __init__(self):
         super().__init__(c="Oh my darlin'", header="Game Start")
 
@@ -148,6 +148,6 @@ class Play(View):
 
 if __name__ == "__main__":
     pygame.init()  # initialize screen
-    GAME = StartScreen()
+    GAME = Play()
     GAME.run()
     print("yo, we outie")

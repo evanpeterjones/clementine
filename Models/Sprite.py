@@ -1,4 +1,3 @@
-import pygame.locals as pl
 import random
 
 from Models.Particle import Particle
@@ -17,15 +16,8 @@ class Sprite(Visible):
         super().__init__(*args, **kwargs)
 
     def key(self, key, keydown=False):
-        if key == pl.K_w:
-            self.set_y_vel((- self.g_vel) if keydown else 0)
-        if key == pl.K_a:
-            self.set_x_vel((- self.g_vel) if keydown else 0)
-        if key == pl.K_s:
-            self.set_y_vel(self.g_vel if keydown else 0)
-        if key == pl.K_d:
-            self.set_x_vel(self.g_vel if keydown else 0)
-
+        pass
+    
     def update_generators(self):
         for x in self.__particles:
             x.update_particle()
