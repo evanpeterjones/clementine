@@ -1,20 +1,20 @@
 import pygame
-import random
 import sys
 
 from pygame.locals import *
 
-from Models.Particle import Particle
 from System.Dialogue import Dialogue
+from System.Clock import Clock
 from Models.Player import Player
 from Models.Sprite import Sprite
-from System.Clock import Clock
-from resources.Colors import BG, FG
+from Models.Map import Map
+from resources.Colors import BG
 
 clock = Clock()
-g_vel = 10
+g_vel = 3
 
-#window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+#window =
+pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 def GameLoop(func):
     """
@@ -29,8 +29,9 @@ def GameLoop(func):
 
         while running:
             # call our game code
-            running = func(*args, **kwargs)
+            running = func(*args, **kwargs, position=pygame.mouse.get_pos())
 
+            # make cursor invisible
             pygame.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
 
             for event in pygame.event.get():
@@ -41,35 +42,28 @@ def GameLoop(func):
                     key_down = False
                     pass
                 if event.type == MOUSEMOTION:
-                    x, y = pygame.mouse.get_pos()
+                    args[0].elements[0].set_position(pygame.mouse.get_pos())
 
-                    [i.set_position(x, y) for i in args[0].elements]
-
+                # These will always attempt to
+                # update the position of whichever item is first in the list
+                # So when we switch devices, we should just move them to the first in the list
+                # Todo: represent the device list on screen using the elements list and
+                #  class reflection to determine what class type each element is
+                # Todo: possibly implement a "Playable" interface/class
+                # Todo: motion needs to be handled by the objects so collision can be handled correctly
                 if event.type == KEYDOWN:
                     key_down = True
                     if event.key == K_ESCAPE:
                         pygame.quit()
                         sys.exit()
-                    if event.key == K_w:
-                        [i.set_y_vel(- (g_vel)) for i in args[0].elements]
-                    if event.key == K_a:
-                        [i.set_x_vel(- (g_vel)) for i in args[0].elements]
-                    if event.key == K_s:
-                        [i.set_y_vel(g_vel) for i in args[0].elements]
-                    if event.key == K_d:
-                        [i.set_x_vel(g_vel) for i in args[0].elements]
+                    else:
+                        for i in args[0].elements:
+                            i.key(event.key, True)
                 if event.type == KEYUP:
-                    if event.key == K_w:
-                        [i.set_y_vel(0) for i in args[0].elements]
-                    if event.key == K_a:
-                        [i.set_x_vel(0) for i in args[0].elements]
-                    if event.key == K_s:
-                        [i.set_y_vel(0) for i in args[0].elements]
-                    if event.key == K_d:
-                        [i.set_x_vel(0) for i in args[0].elements]
+                    key_down = False
+                    for i in args[0].elements:
+                        i.key(event.key, False)
 
-
-            #args[0].player.update()
             clock.next_frame_ready()
             pygame.display.update()
             print("cycles available: " + str(clock.AverageCycles))
@@ -107,29 +101,41 @@ class StartScreen(View):
 
     def __init__(self):
         super().__init__(c="peace out", header="Start Screen")
-        self.elements.append(Player(x=200, y=200, file_name="Images/character_sswsddddddddxxxxww.png", x_acc=1, y_acc=1, screen=self.screen))
+
+        self.elements.append(Player(x=200, y=200,  x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen))
+        self.elements.append(Map(self.screen.get_size()))
         self.particles = []
-        self.music = open("resources/Music/space.mp3")
+        #self.music = open("resources/Music/space.mp3")
         self.dialogue = Dialogue()
-        pygame.mixer.music.load(self.music)
-        pygame.mixer.music.play(-1)
+        #pygame.mixer.music.load(self.music)
+        #pygame.mixer.music.play(-1)
 
         pygame.display.update()
 
     @GameLoop
-    def run(self):
+    def run(self, position=(200,200)):
 
         self.screen.fill(BG)
+        self.screen.blit(self.elements[0].get_image(), position)
 
+        # Todo: time element, need a clock in the corner
+        # Todo: Todo-list, schedule on the screen :?
+        # Todo: Building/House/Apartment map generator
         for element in self.elements:
             element.update()
 
-        self.screen.blit(self.elements[0].get_image(), (200, 200))
         self.dialogue.update(self.screen)
 
         return True
 
+class Pause(View):
+    def __init__(self)
+        super().__init__(c="Yeet", header="Paused")
+
+    @GameLoop
+    def run(self):
+        return True
 
 class Play(View):
     def __init__(self):

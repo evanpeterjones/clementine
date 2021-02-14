@@ -5,8 +5,7 @@ Implements ImageResource so you can optionally provide an image
 counter-intuitive for a base class, this could be done differently, but whatever
 """
 
-
-class Visible:
+class Visible():
     def __init__(self, x=0, y=0, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=10, screen=None):
 
         # POSITION
@@ -27,13 +26,25 @@ class Visible:
 
         # SCREEN REFERENCE: IDK IF THIS IS A GOOD IDEA??
         self.screen = screen
+        self.g_vel = 3
+
+    def key(self, key, keydown=False):
+        '''
+        override this method in implementing class to handle what happens on keypresses
+        '''
+        pass
 
     def get_position(self):
         return [self.x_pos, self.y_pos]
 
-    def set_position(self, x, y):
-        self.x_pos = x
-        self.y_pos = y
+    def set_position(self, position=(0,0)):
+        '''
+        not meant to be used at all except on init, objects should be moved using velocity if possible
+        :param x:
+        :param y:
+        :return:
+        '''
+        self.x_pos, self.y_pos = position
 
     def set_y_vel(self, yvel):
         self.y_vel = yvel

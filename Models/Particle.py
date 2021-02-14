@@ -2,6 +2,7 @@ import pygame
 import random
 
 from Physics.Visible import Visible
+from resources.Utils import random_color
 
 
 def rand():
@@ -25,7 +26,7 @@ class Particle(Visible):
         super().__init__(x_vel=x_vel, y_vel=y_vel, *args, **kwargs)
 
         self.timer = timer
-        self.color = color if color is not None else self.random_color()
+        self.color = color if color is not None else random_color()
         self.width = width if width is not None else random.randint(4, 20)
 
     def get_velocity(self):
@@ -42,7 +43,3 @@ class Particle(Visible):
     def draw(self):
         pygame.draw.circle(self.screen, self.color, self.get_position(), self.width)
 
-    @staticmethod
-    def random_color():
-        rgb = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        return rgb

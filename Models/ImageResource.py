@@ -24,7 +24,7 @@ class SpriteSheet:
             image = pygame.Surface(rect.size).convert()
             image.blit(self.sheet, (0, 0), rectangle)
             if colorkey is not None:
-                if colorkey is -1:
+                if colorkey == -1:
                     colorkey = image.get_at((0, 0))
                 image.set_colorkey(colorkey, pygame.RLEACCEL)
             return image
@@ -67,6 +67,7 @@ class ImageResource:
 
     def get_image(self):
         # self.next_frame()
+        #Todo: fix this so it's not constantly cycling
         return self.Frames[self.KeyDown][self.FramePointer]
 
     def ready_next(self):
@@ -88,6 +89,6 @@ class ImageResource:
             self.FramePointer = 0
 
 '''
-realized file_names should 
+realized file_names should be like this
 '''
 # sswsddddddddxxxxww
