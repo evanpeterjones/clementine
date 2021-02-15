@@ -70,7 +70,6 @@ def parse_file_dsl(file_descriptor: str, sheet: list) -> dict:
     for i, kp in enumerate(file_descriptor):
         res[get_pygame_key_from_character(kp)].append(sheet[i])            
 
-        
     return res
 
 
@@ -84,17 +83,21 @@ class ImageResource:
         self.FramesSinceUpdate = 0
         self.FramesBetweenUpdate = count_frames
 
-        self.K_def = pl.K_x
+        self.K_def = pl.K_s #this needs to be like _ or something that isn't pressed often
         self.Key = self.K_def
         self.pressed = False
-        print(self.Frames)
 
     def get_image(self):
         return self.Frames[self.Key][self.FramePointer]
 
     def set_key_down(self, key, d):
-        self.Key = key if (key in self.Frames.keys()) else self.K_def
+        self.FramePointer = 0
+        if d:
+            self.Key = key if (key in self.Frames.keys()) else self.K_def
+        else:
+            self.Key = self.K_def
         self.pressed = d
+        
 
     def next_frame(self):
         self.FramesSinceUpdate += 1

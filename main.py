@@ -66,7 +66,7 @@ def GameLoop(func):
 
             clock.next_frame_ready()
             pygame.display.update()
-            #print("cycles available: " + str(clock.AverageCycles))
+            print("cycles available: " + str(clock.AverageCycles))
 
     return internalLoop
 
@@ -80,7 +80,6 @@ class View:
         self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
         self.close_message = c
         self.elements = []
-#        self.player = player
 
     def exit(self):
         pygame.quit()
@@ -109,6 +108,7 @@ class Play(View):
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
         self.dialogue = Dialogue()
+
         #pygame.mixer.music.load(self.music)
         #pygame.mixer.music.play(-1)
 
