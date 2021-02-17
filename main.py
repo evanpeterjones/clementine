@@ -13,8 +13,7 @@ from resources.Colors import BG
 clock = Clock()
 g_vel = 3
 
-#window =
-pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+#window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 def GameLoop(func):
     """
