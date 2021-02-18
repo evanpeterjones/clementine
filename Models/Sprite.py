@@ -26,7 +26,7 @@ class Sprite(Visible):
             if x.not_exists():
                 self.__particles.remove(x)
 
-    def update(self, vel: tuple = (4, 10)):
+    def update(self, vel: tuple = (4, 10), all_items=[]):
         # Todo: implement a follow function so this can trail around the player
         for i in range(self.__count):
             self.__particles.append(self.__type(random.randint(vel[0], vel[1]), x=self.x_pos, y=self.y_pos, screen=self.screen))

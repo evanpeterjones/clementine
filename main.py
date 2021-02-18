@@ -65,7 +65,7 @@ def GameLoop(func):
 
             clock.next_frame_ready()
             pygame.display.update()
-            print("cycles available: " + str(clock.AverageCycles))
+            #print("cycles available: " + str(clock.AverageCycles))
 
     return internalLoop
 
@@ -102,7 +102,8 @@ class Play(View):
         
         # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Sprite(count=2, screen=self.screen))
-        self.elements.append(Player(x=200, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
+        self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
+        self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
@@ -122,7 +123,7 @@ class Play(View):
         # Todo: Todo-list, schedule on the screen :?
         # Todo: Building/House/Apartment map generator
         for element in self.elements:
-            element.update()
+            element.update(all_items=self.elements)
 
         self.dialogue.update(self.screen)
 

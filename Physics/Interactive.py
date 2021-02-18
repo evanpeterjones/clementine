@@ -4,6 +4,12 @@ Base Class for all objects which can be interacted with
 from Physics.Visible import Visible
 
 class Interactive(Visible):
+    '''
+    the main difference between this class and the Visible class is that this
+    adds the default collision logic which will just loop through all of the
+    elements on screen and check for collision on each update
+    '''
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -35,7 +41,8 @@ class Interactive(Visible):
                     self.y_vel += self.y_acc
                 if self.y_vel < 0:
                     self.y_vel -= self.y_acc
-
+        else:
+            self.x_vel, self.y_vel = 0
 
     def reverse_x(self):
         pass

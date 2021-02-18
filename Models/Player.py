@@ -27,7 +27,7 @@ class Player(Interactive, ImageResource):
     def get_image(self):
         return self.image.get_image()
 
-    def update(self):
+    def update(self, all_items=[]):
         self.image.next_frame()
         super().update()
 

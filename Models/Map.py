@@ -13,7 +13,7 @@ class Map(Visible):
         self.tile_map = [[Tile() for _ in range(size[1])] for _ in range(size[0])]
         # Todo: implement default walls, which should just be the size of the screen
 
-    def update(self):
+    def update(self, all_items=[]):
         pass
 
     def key(self, key, keydown):

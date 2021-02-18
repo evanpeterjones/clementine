@@ -52,7 +52,7 @@ class Visible():
     def set_x_vel(self, xvel):
         self.x_vel = xvel
 
-    def update(self, x_fric=0, y_fric=0):
+    def update(self, x_fric=0, y_fric=0, all_items=[]):
         """progresses to next frame"""
 
         # Update Position
