@@ -29,5 +29,5 @@ class Player(Interactive, ImageResource):
 
     def update(self, all_items=[]):
         self.image.next_frame()
-        super().update()
+        super().update(all_items)
 

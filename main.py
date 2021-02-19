@@ -3,12 +3,15 @@ import sys
 
 from pygame.locals import *
 
+from Physics.Interactive import Interactive
 from System.Dialogue import Dialogue
 from System.Clock import Clock
 from Models.Player import Player
 from Models.Sprite import Sprite
 from Models.Map import Map
 from resources.Colors import BG
+
+import threading
 
 clock = Clock()
 g_vel = 3
@@ -103,7 +106,7 @@ class Play(View):
         # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Sprite(count=2, screen=self.screen))
         self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
-        self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
+        self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
@@ -114,6 +117,14 @@ class Play(View):
 
         pygame.display.update()
 
+    def check_for_collisions(self,elements):
+        for el in elements:
+            if isinstance(el, Interactive):
+                for c in elements:
+                    if el is not c:
+                        if el.x_pos == c.x_pos and el.y_pos == c.y_pos:
+                            el.collide()
+
     @GameLoop
     def run(self, position=(200,200)):
         self.screen.fill(BG)
@@ -123,7 +134,9 @@ class Play(View):
         # Todo: Todo-list, schedule on the screen :?
         # Todo: Building/House/Apartment map generator
         for element in self.elements:
-            element.update(all_items=self.elements)
+            element.update()
+
+        self.check_for_collisions(self.elements)
 
         self.dialogue.update(self.screen)
 
@@ -148,6 +161,6 @@ class StartScreen(View):
 
 if __name__ == "__main__":
     pygame.init()  # initialize screen
-    GAME = Play()
+    GAME = Play() #threading.Thread(target=Play)
     GAME.run()
     print("yo, we outie")
