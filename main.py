@@ -16,7 +16,7 @@ import threading
 clock = Clock()
 g_vel = 3
 
-#window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+#window =
 
 def GameLoop(func):
     """
@@ -79,7 +79,7 @@ class View:
 
         self.clock = pygame.time.Clock()
         self.WINDOW_SIZE = window_size  # default will need to be changed through conf file
-        self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)#pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
         self.close_message = c
         self.elements = []
 
@@ -118,6 +118,9 @@ class Play(View):
         pygame.display.update()
 
     def check_for_collisions(self,elements):
+        '''this is stupid as fuck and I hate it, omg
+        I wish each object were able to check itself
+        but the code wasn't working when I tried it'''
         for el in elements:
             if isinstance(el, Interactive):
                 for c in elements:
@@ -126,7 +129,7 @@ class Play(View):
                             el.collide()
 
     @GameLoop
-    def run(self, position=(200,200)):
+    def run(self):
         self.screen.fill(BG)
         self.screen.blit(self.elements[1].get_image(), self.elements[1].get_position())
 
@@ -161,6 +164,6 @@ class StartScreen(View):
 
 if __name__ == "__main__":
     pygame.init()  # initialize screen
-    GAME = Play() #threading.Thread(target=Play)
+    GAME = Play()
     GAME.run()
     print("yo, we outie")
