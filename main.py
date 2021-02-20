@@ -107,6 +107,7 @@ class Play(View):
         self.elements.append(Sprite(count=2, screen=self.screen))
         self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200))
+        self.elements.append(Sprite(count=2, screen=self.screen, x=300, y=300))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
@@ -139,7 +140,7 @@ class Play(View):
         for element in self.elements:
             element.update()
 
-        self.check_for_collisions(self.elements)
+        #self.check_for_collisions(self.elements)
 
         self.dialogue.update(self.screen)
 

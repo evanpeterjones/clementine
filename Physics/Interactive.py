@@ -21,7 +21,7 @@ class Interactive(Visible):
         '''
         for i in all_items:
             if i is self:
-                break
+                continue
             if i.x_pos == self.x_pos and i.y_pos == self.y_pos:
                 print("collision: "+str(i) +" "+str(self))
                 return True
@@ -32,19 +32,22 @@ class Interactive(Visible):
         self.y_vel = 0 #(-self.y_vel)
 
     def update(self, all_items, x_chg=0, y_chg=0, x_fric=0, y_fric=0):
-        self.x_pos += (self.x_vel - x_fric)
-        self.y_pos += (self.y_vel - y_fric)
+        if self.collisions(all_items):
+            self.collide()
+        else:
+            self.x_pos += (self.x_vel - x_fric)
+            self.y_pos += (self.y_vel - y_fric)
 
-        if self.x_vel != 0 and abs(self.x_vel) < self.terminal:
-            if self.x_vel > 0:
-                self.x_vel += self.x_acc
-            if self.x_vel < 0:
-                self.x_vel -= self.x_acc
+            if self.x_vel != 0 and abs(self.x_vel) < self.terminal:
+                if self.x_vel > 0:
+                    self.x_vel += self.x_acc
+                if self.x_vel < 0:
+                    self.x_vel -= self.x_acc
 
-        if self.y_vel != 0 and abs(self.y_vel) < self.terminal:
-            if self.y_vel > 0:
-                self.y_vel += self.y_acc
-            if self.y_vel < 0:
-                self.y_vel -= self.y_acc
+            if self.y_vel != 0 and abs(self.y_vel) < self.terminal:
+                if self.y_vel > 0:
+                    self.y_vel += self.y_acc
+                if self.y_vel < 0:
+                    self.y_vel -= self.y_acc
 
 
