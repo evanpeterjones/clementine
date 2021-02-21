@@ -105,7 +105,10 @@ class Play(View):
         
         # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Sprite(count=2, screen=self.screen))
-        self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
+        self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen,
+                                    file_name="Images/character_sswsddddddddxxxxww.png"))
+        self.elements.append(Player(x=600, y=200, x_acc=1, y_acc=1, screen=self.screen,
+                                    file_name="Images/coffeepot_static_1.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []

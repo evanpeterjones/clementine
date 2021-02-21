@@ -77,8 +77,13 @@ class ImageResource:
     def __init__(self, file_name, count_frames: int = 6, * args, **kwargs):
 
         self.NumFrames = len(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
-        file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
-        self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
+        if self.NumFrames is not None and self.NumFrames > 1:
+            file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
+            self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
+        else:
+            self.Frames: dict = [SpriteSheet(file_name, self.NumFrames).load_strip()]
+
+            # Todo: this is borked if the player isn't accepting keyboard input, we need a whole ass other class for just AI objects with images and stuff
         self.FramePointer = 0
         self.FramesSinceUpdate = 0
         self.FramesBetweenUpdate = count_frames
