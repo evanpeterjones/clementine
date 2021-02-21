@@ -52,9 +52,8 @@ def get_pygame_key_from_character(kp_str:str='x'):
         return pl.K_d
     if kp_str == 's':
         return pl.K_s
-    # default 
-    if kp_str == 'x':
-        return pl.K_x
+
+    return pl.K_x
 
 
 def parse_file_dsl(file_descriptor: str, sheet: list) -> dict:
@@ -77,18 +76,14 @@ class ImageResource:
     def __init__(self, file_name, count_frames: int = 6, * args, **kwargs):
 
         self.NumFrames = len(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
-        if self.NumFrames is not None and self.NumFrames > 1:
-            file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
-            self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
-        else:
-            self.Frames: dict = [SpriteSheet(file_name, self.NumFrames).load_strip()]
-
-            # Todo: this is borked if the player isn't accepting keyboard input, we need a whole ass other class for just AI objects with images and stuff
+        file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
+        self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
+        # Todo: this is borked if the player isn't accepting keyboard input, we need a whole ass other class for just AI objects with images and stuff
         self.FramePointer = 0
         self.FramesSinceUpdate = 0
         self.FramesBetweenUpdate = count_frames
 
-        self.K_def = pl.K_s #this needs to be like _ or something that isn't pressed often
+        self.K_def = pl.K_x #this needs to be like _ or something that isn't pressed often
         self.Key = self.K_def
         self.pressed = False
 
@@ -113,6 +108,6 @@ class ImageResource:
 
 
 '''
-realized file_names should be like this
+file_names should be like this
 '''
 # sswsddddddddxxxxww

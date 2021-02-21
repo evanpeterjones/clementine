@@ -36,27 +36,28 @@ class Interactive(Visible):
             if self.x_vel > 0:
                 # compare against our right bounds
                 if i.contains(self.x_pos + self.width, self.y_pos) or \
-                        i.contains(self.x_pos + self.width, self.y_pos + self.height):
+                   i.contains(self.x_pos + self.width, self.y_pos + self.height):
                     self.x_pos = self.x_pos - (2 * self.x_vel)
                     self.x_vel = 0
                     collision = True
             else:
                 # compare against right bounds of other object
-                if i.contains((self.x_pos + self.width), self.y_pos) or i.contains((self.x_pos + self.width), (self.y_pos + self.height)):
+                if i.contains((self.x_pos + self.width), self.y_pos) or \
+                   i.contains((self.x_pos + self.width), (self.y_pos + self.height)):
                     self.x_pos = self.x_pos - (2 * self.x_vel)
                     self.x_vel = 0
                     collision = True
             if self.y_vel > 0:
                 # compare against upper bounds of other object
                 if i.contains(self.x_pos, self.y_pos) or \
-                        i.contains(self.x_pos + self.width, self.y_pos):
+                   i.contains(self.x_pos + self.width, self.y_pos):
                     self.y_vel = 0
                     self.y_pos = self.y_pos - (2 * self.y_vel)
                     collision = True
             else:
                 # compare against lower bounds of other object
                 if i.contains(self.x_pos, self.y_pos + self.height) or \
-                        i.contains(self.x_pos + self.width, self.y_pos + self.height):
+                   i.contains(self.x_pos + self.width, self.y_pos + self.height):
                     self.y_vel = 0
                     self.y_pos = self.y_pos - (2 * self.y_vel)
                     collision = True

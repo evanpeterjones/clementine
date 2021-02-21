@@ -79,7 +79,7 @@ class View:
 
         self.clock = pygame.time.Clock()
         self.WINDOW_SIZE = window_size  # default will need to be changed through conf file
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)#pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
+        self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
         self.close_message = c
         self.elements = []
 
@@ -108,7 +108,7 @@ class Play(View):
         self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Player(x=600, y=200, x_acc=1, y_acc=1, screen=self.screen,
-                                    file_name="Images/coffeepot_static_1.png"))
+                                    file_name="Images/coffeepot_x.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []

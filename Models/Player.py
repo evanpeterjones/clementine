@@ -6,7 +6,7 @@ from Physics.Interactive import Interactive
 
 # no fucking clue why this won't inherit the ImageResource class correctly.
 # driving me actually mad, fuck it for now.
-class Player(Interactive, ImageResource):
+class Player(Interactive):
     def __init__(self, file_name="", **kwargs):
         super().__init__(**kwargs)
 
