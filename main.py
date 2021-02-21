@@ -68,7 +68,7 @@ def GameLoop(func):
 
             clock.next_frame_ready()
             pygame.display.update()
-            #print("cycles available: " + str(clock.AverageCycles))
+            print("cycles available: " + str(clock.AverageCycles))
 
     return internalLoop
 
@@ -106,8 +106,7 @@ class Play(View):
         # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Sprite(count=2, screen=self.screen))
         self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen, file_name="Images/character_sswsddddddddxxxxww.png"))
-        self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200))
-        self.elements.append(Sprite(count=2, screen=self.screen, x=300, y=300))
+        self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
@@ -118,17 +117,6 @@ class Play(View):
 
         pygame.display.update()
 
-    def check_for_collisions(self,elements):
-        '''this is stupid as fuck and I hate it, omg
-        I wish each object were able to check itself
-        but the code wasn't working when I tried it'''
-        for el in elements:
-            if isinstance(el, Interactive):
-                for c in elements:
-                    if el is not c:
-                        if el.x_pos == c.x_pos and el.y_pos == c.y_pos:
-                            el.collide()
-
     @GameLoop
     def run(self):
         self.screen.fill(BG)
@@ -138,7 +126,7 @@ class Play(View):
         # Todo: Todo-list, schedule on the screen :?
         # Todo: Building/House/Apartment map generator
         for element in self.elements:
-            element.update()
+            element.update(all_items=self.elements)
 
         #self.check_for_collisions(self.elements)
 

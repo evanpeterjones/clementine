@@ -1,4 +1,5 @@
 import random
+import math
 
 from Models.Particle import Particle
 from Physics.Visible import Visible
@@ -14,6 +15,11 @@ class Sprite(Visible):
         self.__count = count
         self.__particles = []
         super().__init__(*args, **kwargs)
+
+    def contains(self, x, y):
+        # Todo: rewrite this using sin function, this pretends we're a square
+        return ((self.x_pos - (self.width / 2)) <= x <= (self.x_pos + (self.width / 2)) and
+                (self.y_pos - (self.height / 2)) <= y <= (self.y_pos + (self.height / 2)))
 
     def key(self, key, keydown=False):
         pass
@@ -31,4 +37,4 @@ class Sprite(Visible):
         for i in range(self.__count):
             self.__particles.append(self.__type(random.randint(vel[0], vel[1]), x=self.x_pos, y=self.y_pos, screen=self.screen))
         self.update_generators()
-        super().update()
+        super().update(all_items=all_items)

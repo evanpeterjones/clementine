@@ -5,8 +5,13 @@ Implements ImageResource so you can optionally provide an image
 counter-intuitive for a base class, this could be done differently, but whatever
 """
 
-class Visible():
-    def __init__(self, x=0, y=0, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, screen=None):
+
+class Visible:
+    def __init__(self, x=0, y=0, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, screen=None):
+
+        # SIZE
+        self.width = width
+        self.height = height
 
         # POSITION
         self.x_pos = x
@@ -37,7 +42,7 @@ class Visible():
     def get_position(self):
         return [self.x_pos, self.y_pos]
 
-    def set_position(self, position=(0,0)):
+    def set_position(self, position=(0, 0)):
         '''
         not meant to be used at all except on init, objects should be moved using velocity if possible
         :param x:
@@ -53,8 +58,6 @@ class Visible():
         self.x_vel = xvel
 
     def update(self, x_fric=0, y_fric=0, all_items=[]):
-        """progresses to next frame"""
-
         # Update Position
         self.x_pos += (self.x_vel - x_fric)
         self.y_pos += (self.y_vel - y_fric)
@@ -70,6 +73,9 @@ class Visible():
                 self.y_vel += self.y_acc
             if self.y_vel < 0:
                 self.y_vel -= self.y_acc
+
+    def contains(self, x, y):
+        pass
 
     def draw(self):
         pass
