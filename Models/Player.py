@@ -29,5 +29,6 @@ class Player(Interactive):
 
     def update(self, all_items=[]):
         self.image.next_frame()
+        self.screen.blit(self.image.get_image(), self.get_position())
         super().update(all_items)
 

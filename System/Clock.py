@@ -46,6 +46,7 @@ class Clock:
             Tabulates the free computation cycles available at the end of each frame
             :return:
             """
+            
             cycles = 0
             while self.__time() < self.__nextFrame:
                 cycles += 1

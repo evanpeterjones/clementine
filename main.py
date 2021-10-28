@@ -3,7 +3,7 @@ import sys
 
 from pygame.locals import *
 
-from Physics.Interactive import Interactive
+from Physics.Visible import Visible
 from System.Dialogue import Dialogue
 from System.Clock import Clock
 from Models.Player import Player
@@ -107,8 +107,6 @@ class Play(View):
         self.elements.append(Sprite(count=2, screen=self.screen))
         self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxww.png"))
-        self.elements.append(Player(x=600, y=200, x_acc=1, y_acc=1, screen=self.screen,
-                                    file_name="Images/coffeepot_x.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
         self.particles = []
@@ -123,15 +121,12 @@ class Play(View):
     @GameLoop
     def run(self):
         self.screen.fill(BG)
-        self.screen.blit(self.elements[1].get_image(), self.elements[1].get_position())
 
         # Todo: time element, need a clock in the corner
         # Todo: Todo-list, schedule on the screen :?
         # Todo: Building/House/Apartment map generator
         for element in self.elements:
             element.update(all_items=self.elements)
-
-        #self.check_for_collisions(self.elements)
 
         self.dialogue.update(self.screen)
 

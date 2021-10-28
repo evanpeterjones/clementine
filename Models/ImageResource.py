@@ -1,4 +1,3 @@
-from resources.Colors import FG, BG
 
 import pygame.locals as pl
 import pygame
@@ -73,11 +72,15 @@ def parse_file_dsl(file_descriptor: str, sheet: list) -> dict:
 
 
 class ImageResource:
-    def __init__(self, file_name, count_frames: int = 6, * args, **kwargs):
+    def __init__(self, file_name: str = None, count_frames: int = 6, * args, **kwargs):
 
-        self.NumFrames = len(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
-        file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
-        self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
+        self.ImageLoaded : bool = file_name is not None
+        
+        if self.ImageLoaded:
+            self.NumFrames = len(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
+            file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
+            self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
+
         # Todo: this is borked if the player isn't accepting keyboard input, we need a whole ass other class for just AI objects with images and stuff
         self.FramePointer = 0
         self.FramesSinceUpdate = 0
@@ -88,20 +91,22 @@ class ImageResource:
         self.pressed = False
 
     def get_image(self):
-        return self.Frames[self.Key][self.FramePointer]
+        if self.ImageLoaded:
+            return self.Frames[self.Key][self.FramePointer]
 
     def set_key_down(self, key, d):
-        self.FramePointer = 0
-        if d:
-            self.Key = key if (key in self.Frames.keys()) else self.K_def
-        else:
-            self.Key = self.K_def
-        self.pressed = d
+        if self.ImageLoaded:
+            self.FramePointer = 0
+            if d:
+                self.Key = key if (key in self.Frames.keys()) else self.K_def
+            else:
+                self.Key = self.K_def
+            self.pressed = d
         
 
     def next_frame(self):
         self.FramesSinceUpdate += 1
-        if self.FramesSinceUpdate >= self.FramesBetweenUpdate:
+        if self.ImageLoaded and self.FramesSinceUpdate >= self.FramesBetweenUpdate:
             self.FramesSinceUpdate = 0
             #Todo: fix this so it's not constantly cycling
             self.FramePointer = (self.FramePointer + 1) % len(self.Frames[self.Key])

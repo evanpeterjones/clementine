@@ -1,13 +1,15 @@
 """
 base class must be implemented by anything to be displayed
-Implements ImageResource so you can optionally provide an image
+Implements ImageResource so you can optionally provide an 
+
 
 counter-intuitive for a base class, this could be done differently, but whatever
 """
 
 
-class Visible:
-    def __init__(self, x=0, y=0, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, screen=None):
+class Visible():
+    def __init__(self, x=0, y=0, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, screen=None, **kwargs):
+        super().__init__(**kwargs)
 
         # SIZE
         self.width = width
@@ -58,6 +60,7 @@ class Visible:
         self.x_vel = xvel
 
     def update(self, x_fric=0, y_fric=0, all_items=[]):
+
         # Update Position
         self.x_pos += (self.x_vel - x_fric)
         self.y_pos += (self.y_vel - y_fric)
