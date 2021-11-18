@@ -1,5 +1,4 @@
 import random
-import math
 
 from Models.Particle import Particle
 from Physics.Visible import Visible

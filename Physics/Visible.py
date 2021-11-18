@@ -7,9 +7,12 @@ counter-intuitive for a base class, this could be done differently, but whatever
 """
 
 
-class Visible():
-    def __init__(self, x=0, y=0, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, screen=None, **kwargs):
+class Visible:
+    def __init__(self, x=0, y=0, z=0, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, cursor=False, screen=None, **kwargs):
         super().__init__(**kwargs)
+
+        # IF CURSOR_CONTROL_ENABLED
+        self.cursor_control_enabled = cursor
 
         # SIZE
         self.width = width
@@ -18,6 +21,7 @@ class Visible():
         # POSITION
         self.x_pos = x
         self.y_pos = y
+        self.z_pos = z
 
         # VELOCITY
         self.x_vel = x_vel

@@ -18,6 +18,10 @@ g_vel = 3
 
 #window =
 
+def get_cursor_elements(elements):
+    'function to return all of the elements which recieve cursor input'
+    return [e for e in elements if e.cursor_control_enabled]
+
 def GameLoop(func):
     """
     Decorates game loop functions, to indicate the end of the loop, return false from implementing function
@@ -44,7 +48,10 @@ def GameLoop(func):
                     key_down = False
                     pass
                 if event.type == MOUSEMOTION:
-                    args[0].elements[0].set_position(pygame.mouse.get_pos())
+                    # Todo: this needs to be a search function so the cursor can have a
+                    cursor_els = get_cursor_elements(args[0].elements)
+                    for i in cursor_els:
+                        i.set_position(pygame.mouse.get_pos())
 
                 # These will always attempt to
                 # update the position of whichever item is first in the list
@@ -104,11 +111,12 @@ class Play(View):
         super().__init__(c="peace out", header="Start Screen")
         
         # mouse has to be the first item in the list, always or this breaks
-        self.elements.append(Sprite(count=2, screen=self.screen))
+        self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
         self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
+
         self.particles = []
         #self.music = open("resources/Music/space.mp3")
         self.dialogue = Dialogue()
@@ -125,6 +133,7 @@ class Play(View):
         # Todo: time element, need a clock in the corner
         # Todo: Todo-list, schedule on the screen :?
         # Todo: Building/House/Apartment map generator
+        # Todo: we need to add a Z-index to the elements, and insert into the element list based on that. The only way this would work is if the cursor element is handled differently
         for element in self.elements:
             element.update(all_items=self.elements)
 

@@ -4,10 +4,8 @@ import random
 from Physics.Visible import Visible
 from resources.Utils import random_color
 
-
 def rand():
     return random.randint(0, 2) - 1
-
 
 class Particle(Visible):
     def __init__(self, timer: int, color: int = None, width: int = None, x_vel: int = None,
