@@ -48,10 +48,7 @@ def GameLoop(func):
                     key_down = False
                     pass
                 if event.type == MOUSEMOTION:
-                    # Todo: this needs to be a search function so the cursor can have a
-                    cursor_els = get_cursor_elements(args[0].elements)
-                    for i in cursor_els:
-                        i.set_position(pygame.mouse.get_pos())
+                    [i.set_position(pygame.mouse.get_pos()) for i in get_cursor_elements(args[0].elements)]
 
                 # These will always attempt to
                 # update the position of whichever item is first in the list
@@ -59,7 +56,6 @@ def GameLoop(func):
                 # Todo: represent the device list on screen using the elements list and
                 #  class reflection to determine what class type each element is
                 # Todo: possibly implement a "Playable" interface/class
-                # Todo: motion needs to be handled by the objects so collision can be handled correctly
                 if event.type == KEYDOWN:
                     key_down = True
                     if event.key == K_ESCAPE:
@@ -111,9 +107,9 @@ class Play(View):
         super().__init__(c="peace out", header="Start Screen")
         
         # mouse has to be the first item in the list, always or this breaks
-        self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
-        self.elements.append(Player(x=400, y=200, x_acc=1, y_acc=1, screen=self.screen,
+        self.elements.append(Player(x=400, y=200, z=0, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxww.png"))
+        self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
 

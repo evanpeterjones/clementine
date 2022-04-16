@@ -3,9 +3,23 @@ import pygame.freetype
 
 class Dialogue:
     def __init__(self):
-
         self.__pointer = 0
-        self.script = ['“Are you sure you want me to tell you this? I’ve heard that the more you talk about it, the more likely it is for it to affect you?”']
+        self.script = ["I had watched the flowerbeds"
+                       "and every day they'd grown"
+                       "until one day I woke"
+                       "to find them buried in the snow"
+                       "but that's the night I found him"
+                       "with teeth that no blood knew"
+                       "he sees the night and knows the sky"
+                       "his crescent smile assumes"
+                       "but now the crescent's looming"
+                       "wider than his eyes"
+                       "I see his lower half"
+                       "it's peering through the blinds"
+                       "and he's at the mail slot"
+                       "up above the neck"
+                       "he must have seen my looking"
+                       "then never turned his back"]
         self.font = pygame.font.SysFont('arial', 24)
         self.img = None
         self.font_size = 24
