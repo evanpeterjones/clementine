@@ -16,7 +16,8 @@ import threading
 clock = Clock()
 g_vel = 3
 
-#window =
+
+# window =
 
 def get_cursor_elements(elements):
     'function to return all of the elements which recieve cursor input'
@@ -81,10 +82,13 @@ class View:
         pygame.display.set_caption(header)  # set header text
 
         self.clock = pygame.time.Clock()
-        self.WINDOW_SIZE = window_size  # default will need to be changed through conf file
+        self.WINDOW_SIZE: Tuple[int, int] = window_size  # default will need to be changed through conf file
         self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
-        self.close_message = c
-        self.elements = []
+        self.close_message: str = c
+        self.elements: [Visible] = []
+
+    def add_element(self, new_element: Visible):
+        self.elements.append(new_element)
 
     def exit(self):
         pygame.quit()
@@ -104,21 +108,20 @@ class Play(View):
     """
 
     def __init__(self):
-        super().__init__(c="peace out", header="Start Screen")
-        
+        super().__init__(c="peace out", header="Clementine")
+
         # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Player(x=400, y=200, z=0, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
-
         self.particles = []
-        #self.music = open("resources/Music/space.mp3")
+        # self.music = open("resources/Music/space.mp3")
         self.dialogue = Dialogue()
 
-        #pygame.mixer.music.load(self.music)
-        #pygame.mixer.music.play(-1)
+        # pygame.mixer.music.load(self.music)
+        # pygame.mixer.music.play(-1)
 
         pygame.display.update()
 
@@ -137,6 +140,7 @@ class Play(View):
 
         return True
 
+
 class Pause(View):
     def __init__(self):
         super().__init__(c="Yeet", header="Paused")
@@ -145,17 +149,20 @@ class Pause(View):
     def run(self):
         return True
 
+
 class StartScreen(View):
     def __init__(self):
-        super().__init__(c="Oh my darlin'", header="Game Start")
+        super().__init__(header="Game Start")
+        self.elements.append()
 
     @GameLoop
     def run(self):
+
         return True
 
 
 if __name__ == "__main__":
     pygame.init()  # initialize screen
-    GAME = Play()
+    GAME = StartScreen() #Play()
     GAME.run()
     print("yo, we outie")
