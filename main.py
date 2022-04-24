@@ -153,7 +153,7 @@ class Pause(View):
 class StartScreen(View):
     def __init__(self):
         super().__init__(header="Game Start")
-        self.elements.append()
+        #self.elements.append()
 
     @GameLoop
     def run(self):
@@ -163,6 +163,6 @@ class StartScreen(View):
 
 if __name__ == "__main__":
     pygame.init()  # initialize screen
-    GAME = StartScreen() #Play()
+    GAME = Play() # StartScreen()
     GAME.run()
     print("yo, we outie")
