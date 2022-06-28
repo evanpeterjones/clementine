@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import pygame
 import sys
 
@@ -11,7 +13,7 @@ from Models.Sprite import Sprite
 from Models.Map import Map
 from resources.Colors import BG
 
-import threading
+#import threading
 
 clock = Clock()
 g_vel = 3
@@ -110,18 +112,18 @@ class Play(View):
     def __init__(self):
         super().__init__(c="peace out", header="Clementine")
 
-        # mouse has to be the first item in the list, always or this breaks
         self.elements.append(Player(x=400, y=200, z=0, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
-        self.particles = []
         # self.music = open("resources/Music/space.mp3")
-        self.dialogue = Dialogue()
-
         # pygame.mixer.music.load(self.music)
         # pygame.mixer.music.play(-1)
+
+        # Dialogue should be an element on screen as well.
+        self.dialogue = Dialogue()
+
 
         pygame.display.update()
 
