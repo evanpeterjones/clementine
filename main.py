@@ -113,7 +113,7 @@ class Play(View):
         super().__init__(c="peace out", header="Clementine")
 
         self.elements.append(Player(x=400, y=200, z=0, x_acc=1, y_acc=1, screen=self.screen,
-                                    file_name="Images/character_sswsddddddddxxxxww.png"))
+                                    file_name="Images/character_sswsddddddddxxxxwwww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
@@ -132,9 +132,10 @@ class Play(View):
         self.screen.fill(BG)
 
         # Todo: time element, need a clock in the corner
-        # Todo: Todo-list, schedule on the screen :?
-        # Todo: Building/House/Apartment map generator
-        # Todo: we need to add a Z-index to the elements, and insert into the element list based on that. The only way this would work is if the cursor element is handled differently
+        #  Todo: Todo-list, schedule on the screen :?
+        #  Todo: Building/House/Apartment map generator
+        #   Todo: we need to add a Z-index to the elements, and insert into the
+        #   element list based on that. The only way this would work is if the cursor element is handled differently
         for element in self.elements:
             element.update(all_items=self.elements)
 

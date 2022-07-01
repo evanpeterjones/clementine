@@ -1,4 +1,3 @@
-
 import pygame.locals as pl
 import pygame
 import os
@@ -42,7 +41,8 @@ class SpriteSheet:
                 for x in range(self.image_count)]
         return self.images_at(tups, colorkey)
 
-def get_pygame_key_from_character(kp_str:str='x'):
+
+def get_pygame_key_from_character(kp_str: str = 'x'):
     if kp_str == 'w':
         return pl.K_w
     if kp_str == 'a':
@@ -66,27 +66,28 @@ def parse_file_dsl(file_descriptor: str, sheet: list) -> dict:
     for i, keypress in enumerate(file_descriptor):
         res[get_pygame_key_from_character(keypress)] = [sheet[i]]
     for i, kp in enumerate(file_descriptor):
-        res[get_pygame_key_from_character(kp)].append(sheet[i])            
+        res[get_pygame_key_from_character(kp)].append(sheet[i])
 
     return res
 
 
 class ImageResource:
-    def __init__(self, file_name: str = None, count_frames: int = 6, * args, **kwargs):
+    def __init__(self, file_name: str = None, count_frames: int = 6, *args, **kwargs):
 
-        self.ImageLoaded : bool = file_name is not None
-        
+        self.ImageLoaded: bool = file_name is not None
+
         if self.ImageLoaded:
             self.NumFrames = len(file_name.split('.')[0].split(os.sep)[-1].split('_')[-1])
             file_list = file_name.split('.')[0].split(os.sep)[-1].split('_')
             self.Frames: dict = parse_file_dsl(file_list[1], SpriteSheet(file_name, self.NumFrames).load_strip())
 
-        # Todo: this is borked if the player isn't accepting keyboard input, we need a whole ass other class for just AI objects with images and stuff
+        # Todo: this is borked if the player isn't accepting keyboard input, we need a whole ass other class for just
+        #  AI objects with images and stuff
         self.FramePointer = 0
         self.FramesSinceUpdate = 0
         self.FramesBetweenUpdate = count_frames
 
-        self.K_def = pl.K_x #this needs to be like _ or something that isn't pressed often
+        self.K_def = pl.K_s  # this needs to be like _ or something that isn't pressed often
         self.Key = self.K_def
         self.pressed = False
 
@@ -102,13 +103,12 @@ class ImageResource:
             else:
                 self.Key = self.K_def
             self.pressed = d
-        
 
     def next_frame(self):
         self.FramesSinceUpdate += 1
         if self.ImageLoaded and self.FramesSinceUpdate >= self.FramesBetweenUpdate:
             self.FramesSinceUpdate = 0
-            #Todo: fix this so it's not constantly cycling
+            # Todo: fix this so it's not constantly cycling
             self.FramePointer = (self.FramePointer + 1) % len(self.Frames[self.Key])
 
 
