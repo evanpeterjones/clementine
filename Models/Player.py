@@ -22,6 +22,8 @@ class Player(Interactive, ImageResource):
 
     def update(self, all_items=[], **kwargs):
         self.next_frame()
-        self.screen.blit(self.get_image(), self.get_position())
         super().update(all_items)
+
+    def draw(self, screen):
+        screen.blit(self.get_image(), self.get_position())
 

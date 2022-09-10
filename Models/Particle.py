@@ -38,6 +38,6 @@ class Particle(Visible):
     def not_exists(self):
         return self.timer <= 0
 
-    def draw(self):
-        pygame.draw.circle(self.screen, self.color, self.get_position(), self.width)
+    def draw(self, screen):
+        pygame.draw.circle(screen, self.color, self.get_position(), self.width)
 

@@ -13,7 +13,7 @@ from Models.Sprite import Sprite
 from Models.Map import Map
 from resources.Colors import BG
 
-#import threading
+# import threading
 
 clock = Clock()
 g_vel = 3
@@ -24,6 +24,11 @@ g_vel = 3
 def get_cursor_elements(elements):
     'function to return all of the elements which recieve cursor input'
     return [e for e in elements if e.cursor_control_enabled]
+
+class EscapePressed(Exception):
+    def __init__(self):
+        pass
+
 
 def GameLoop(func):
     """
@@ -62,8 +67,7 @@ def GameLoop(func):
                 if event.type == KEYDOWN:
                     key_down = True
                     if event.key == K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
+                        raise EscapePressed
                     else:
                         for i in args[0].elements:
                             i.key(event.key, True)
@@ -80,52 +84,20 @@ def GameLoop(func):
 
 
 class View:
-    def __init__(self, window_size=(1200, 720), c="See ya next time", header="CLEM"):
+    def __init__(self, window_size=(1200, 720), img='resources\\Images\\coffeepot_x.png', header="Clementine"):
         pygame.display.set_caption(header)  # set header text
-
+        pygame_icon = pygame.image.load(img)
+        pygame.display.set_icon(pygame_icon)
         self.clock = pygame.time.Clock()
-        self.WINDOW_SIZE: Tuple[int, int] = window_size  # default will need to be changed through conf file
-        self.screen = pygame.display.set_mode(self.WINDOW_SIZE, 0, 32)  # initialize the window
-        self.close_message: str = c
+        self.screen = pygame.display.set_mode(window_size, pygame.RESIZABLE)
+
         self.elements: [Visible] = []
 
-    def add_element(self, new_element: Visible):
+    def element(self, new_element: Visible):
         self.elements.append(new_element)
 
-    def exit(self):
-        pygame.quit()
-        print(self.close_message)
-        sys.exit()
-
     def update_header(self, header):
-        """
-        :type header: String
-        """
         pygame.display.set_caption(header)
-
-
-class Play(View):
-    """
-    Present Start Screen and all Animations
-    """
-
-    def __init__(self):
-        super().__init__(c="peace out", header="Clementine")
-
-        self.elements.append(Player(x=400, y=200, z=0, x_acc=1, y_acc=1, screen=self.screen,
-                                    file_name="Images/character_sswsddddddddxxxxwwww.png"))
-        self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
-        self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
-        self.elements.append(Map(self.screen.get_size()))
-        # self.music = open("resources/Music/space.mp3")
-        # pygame.mixer.music.load(self.music)
-        # pygame.mixer.music.play(-1)
-
-        # Dialogue should be an element on screen as well.
-        self.dialogue = Dialogue()
-
-
-        pygame.display.update()
 
     @GameLoop
     def run(self):
@@ -138,34 +110,43 @@ class Play(View):
         #   element list based on that. The only way this would work is if the cursor element is handled differently
         for element in self.elements:
             element.update(all_items=self.elements)
-
-        self.dialogue.update(self.screen)
+            element.draw(self.screen)
 
         return True
+
+
+class Play(View):
+    """
+    Present Start Screen and all Animations
+    """
+
+    def __init__(self):
+        super().__init__(header="Cabin in the Woods")
+
+        self.element(Player(x=400, y=200, z=0, x_acc=1, y_acc=1,
+                            file_name="Images/character_sswsddddddddxxxxww.png"))
+        self.element(Sprite(count=2, cursor=True))
+        self.element(Sprite(count=2, x=200, y=200, x_vel=1))
+        self.element(Map(self.screen.get_size()))
 
 
 class Pause(View):
     def __init__(self):
-        super().__init__(c="Yeet", header="Paused")
-
-    @GameLoop
-    def run(self):
-        return True
+        super().__init__(header="Paused")
 
 
 class StartScreen(View):
     def __init__(self):
         super().__init__(header="Game Start")
-        #self.elements.append()
-
-    @GameLoop
-    def run(self):
-
-        return True
+        #self.element(SelectableText(text="Start Game"))
+        #self.element(SelectableText(text="Start Game"))
 
 
 if __name__ == "__main__":
-    pygame.init()  # initialize screen
-    GAME = Play() # StartScreen()
-    GAME.run()
-    print("yo, we outie")
+    pygame.init()
+    GAME = Play()
+    try:
+        GAME.run()
+    except EscapePressed:
+        pause = Pause()
+        pause.run()

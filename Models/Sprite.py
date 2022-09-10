@@ -26,7 +26,6 @@ class Sprite(Visible):
     def update_generators(self):
         for x in self.__particles:
             x.update_particle()
-            x.draw()
 
             if x.not_exists():
                 self.__particles.remove(x)
@@ -34,6 +33,10 @@ class Sprite(Visible):
     def update(self, vel: tuple = (4, 10), all_items=[]):
         # Todo: implement a follow function so this can trail around the player
         for i in range(self.__count):
-            self.__particles.append(self.__type(random.randint(vel[0], vel[1]), x=self.x_pos, y=self.y_pos, screen=self.screen))
+            self.__particles.append(self.__type(random.randint(vel[0], vel[1]), x=self.x_pos, y=self.y_pos))
         self.update_generators()
         super().update(all_items=all_items)
+
+    def draw(self, screen):
+        for x in self.__particles:
+            x.draw(screen)
