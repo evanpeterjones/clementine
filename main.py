@@ -10,6 +10,7 @@ from System.Dialogue import Dialogue
 from System.Clock import Clock
 from Models.Player import Player
 from Models.Sprite import Sprite
+from Models.Rain import Rain
 from Models.Map import Map
 from resources.Colors import BG
 
@@ -47,9 +48,6 @@ def GameLoop(func):
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == KEYUP:
-                    key_down = False
-                    pass
                 if event.type == MOUSEMOTION:
                     [i.set_position(pygame.mouse.get_pos()) for i in get_cursor_elements(args[0].elements)]
 
@@ -112,20 +110,22 @@ class Play(View):
     def __init__(self):
         super().__init__(c="peace out", header="Clementine")
 
+        #self.elements.append(Rain())
+        self.elements.append(Player(x=400, y=250, screen=self.screen, file_name="Images/coffeepot_x.png"))
         self.elements.append(Player(x=400, y=200, z=0, x_acc=1, y_acc=1, screen=self.screen,
                                     file_name="Images/character_sswsddddddddxxxxwwww.png"))
         self.elements.append(Sprite(count=2, screen=self.screen, cursor=True))
         self.elements.append(Sprite(count=2, screen=self.screen, x=200, y=200, x_vel=1))
         self.elements.append(Map(self.screen.get_size()))
-        # self.music = open("resources/Music/space.mp3")
-        # pygame.mixer.music.load(self.music)
-        # pygame.mixer.music.play(-1)
+        #self.music = open("resources/Music/space.mp3")
+        #pygame.mixer.music.load(self.music)
+        #pygame.mixer.music.play(-1)
 
         # Dialogue should be an element on screen as well.
         self.dialogue = Dialogue()
 
 
-        pygame.display.update()
+        #pygame.display.update()
 
     @GameLoop
     def run(self):
@@ -160,7 +160,6 @@ class StartScreen(View):
 
     @GameLoop
     def run(self):
-
         return True
 
 

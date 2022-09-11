@@ -8,7 +8,7 @@ counter-intuitive for a base class, this could be done differently, but whatever
 
 
 class Visible:
-    def __init__(self, x=0, y=0, z=1, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, cursor=False, screen=None, **kwargs):
+    def __init__(self, x=0, y=0, z=1, width=20, height=20, x_vel=0, y_vel=0, x_acc=0, y_acc=0, term=2, mass=1, cursor=False, screen=None, **kwargs):
         super().__init__(**kwargs)
 
         # IF CURSOR_CONTROL_ENABLED
@@ -30,6 +30,9 @@ class Visible:
         # ACCELERATION
         self.x_acc = x_acc
         self.y_acc = y_acc
+
+        # MASS
+        self.mass = mass
 
         # TERMINAL VELOCITY
         self.terminal = term
@@ -72,13 +75,13 @@ class Visible:
         if self.x_vel != 0 and abs(self.x_vel) < self.terminal:
             if self.x_vel > 0:
                 self.x_vel += self.x_acc
-            if self.x_vel < 0:
+            else:
                 self.x_vel -= self.x_acc
 
         if self.y_vel != 0 and abs(self.y_vel) < self.terminal:
             if self.y_vel > 0:
                 self.y_vel += self.y_acc
-            if self.y_vel < 0:
+            else:
                 self.y_vel -= self.y_acc
 
     def contains(self, x, y):

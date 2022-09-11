@@ -19,6 +19,9 @@ class Player(Interactive, ImageResource):
             self.set_y_vel(self.g_vel if keydown else 0)
         if key == pl.K_d:
             self.set_x_vel(self.g_vel if keydown else 0)
+        if key == pl.K_SPACE:
+            pass
+            #elements.append()
 
     def update(self, all_items=[], **kwargs):
         self.next_frame()
