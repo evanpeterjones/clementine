@@ -57,6 +57,8 @@ def GameLoop(func):
                     pass
                 if event.type == MOUSEMOTION:
                     [i.set_position(pygame.mouse.get_pos()) for i in get_cursor_elements(args[0].elements)]
+                if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP:
+                    [i.key(event.type) for i in get_cursor_elements(args[0].elements)]
 
                 # These will always attempt to
                 # update the position of whichever item is first in the list
@@ -133,6 +135,7 @@ class Play(View):
 class Pause(View):
     def __init__(self):
         super().__init__(header="Paused")
+        self.element(Sprite(count=2, cursor=True))
 
 
 class StartScreen(View):
