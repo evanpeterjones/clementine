@@ -154,8 +154,8 @@ class Pause(View):
 class StartScreen(View):
     def __init__(self):
         super().__init__(header="Game Start")
-        self.element(SelectableText(text="Start Game"))
-        self.element(SelectableText(text="Start Game"))
+        self.element(SelectableText(text="Start Game", x=20))
+        self.element(SelectableText(text="Start Game", x=40))
 
 
 if __name__ == "__main__":

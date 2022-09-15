@@ -1,12 +1,10 @@
 import pygame
 import pygame.freetype
-from Physics import Visible
-
-#Font = pygame.font.SysFont('arial', 24)
+from Physics import Interactive
 
 
-class SelectableText(Visible):
-    def __init__(self, text, **kwargs):
+class SelectableText():
+    def __init__(self, text="Close", **kwargs):
         super().__init__(**kwargs)
         self.text = text
 
