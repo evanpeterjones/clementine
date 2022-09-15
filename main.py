@@ -1,3 +1,4 @@
+import os
 from typing import Tuple
 
 import pygame
@@ -6,7 +7,7 @@ import sys
 from pygame.locals import *
 
 from Physics.Visible import Visible
-from System.Dialogue import Dialogue
+from System.Text import SelectableText
 from System.Clock import Clock
 from Models.Player import Player
 from Models.Sprite import Sprite
@@ -24,6 +25,7 @@ g_vel = 3
 def get_cursor_elements(elements):
     'function to return all of the elements which recieve cursor input'
     return [e for e in elements if e.cursor_control_enabled]
+
 
 class EscapePressed(Exception):
     def __init__(self):
@@ -85,13 +87,24 @@ def GameLoop(func):
     return internalLoop
 
 
+def safe_get_window():
+    try:
+        return pygame.display.get_surface().get_size()
+    except AttributeError:
+        return None
+
+
 class View:
-    def __init__(self, window_size=(1200, 720), img='resources\\Images\\coffeepot_x.png', header="Clementine"):
+    def __init__(self,
+                 window_size=(1200, 720),
+                 img=os.path.join('resources', 'Images', 'coffeepot_x.png'),
+                 header="Clementine"):
         pygame.display.set_caption(header)  # set header text
         pygame_icon = pygame.image.load(img)
         pygame.display.set_icon(pygame_icon)
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode(window_size, pygame.RESIZABLE)
+        window = safe_get_window()
+        self.screen = pygame.display.set_mode((window if window else window_size), pygame.RESIZABLE)
 
         self.elements: [Visible] = []
 
@@ -141,15 +154,21 @@ class Pause(View):
 class StartScreen(View):
     def __init__(self):
         super().__init__(header="Game Start")
-        #self.element(SelectableText(text="Start Game"))
-        #self.element(SelectableText(text="Start Game"))
+        self.element(SelectableText(text="Start Game"))
+        self.element(SelectableText(text="Start Game"))
 
 
 if __name__ == "__main__":
     pygame.init()
-    GAME = Play()
-    try:
-        GAME.run()
-    except EscapePressed:
-        pause = Pause()
-        pause.run()
+    Continue = True
+
+    Window: [View] = [Play()]
+
+    while Continue:
+        try:
+            Window[-1].run()
+        except EscapePressed:
+            if isinstance(Window[-1], Play):
+                Window.append(Pause())
+            else:
+                Window.pop()

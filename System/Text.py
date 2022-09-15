@@ -1,5 +1,15 @@
 import pygame
 import pygame.freetype
+from Physics import Visible
+
+#Font = pygame.font.SysFont('arial', 24)
+
+
+class SelectableText(Visible):
+    def __init__(self, text, **kwargs):
+        super().__init__(**kwargs)
+        self.text = text
+
 
 class Dialogue:
     def __init__(self):
@@ -23,11 +33,11 @@ class Dialogue:
         self.font = pygame.font.SysFont('arial', 24)
         self.img = None
         self.font_size = 24
-        #self.img = self.font.render(self.script[self.__pointer], True, )
+        # self.img = self.font.render(self.script[self.__pointer], True, )
 
-    def initialize(self, font_type = 'resources/Freedom-10eM.tff'):
-        #self.font = pygame.freetype.Font(font_type, self.font_size)
-        #self.font = pygame.font.SysFont(font_type, self.font_size)
+    def initialize(self, font_type='resources/Freedom-10eM.tff'):
+        # self.font = pygame.freetype.Font(font_type, self.font_size)
+        # self.font = pygame.font.SysFont(font_type, self.font_size)
         self.img = self.font.render(self.get_dialogue(), True, pygame.color.Color(255, 255, 255))
 
     def get_dialogue(self):
@@ -36,7 +46,6 @@ class Dialogue:
         result = ''
         num_lines = len(self.script[self.__pointer]) / self.font_size
 
-
         return result
 
     def update(self, screen):
@@ -44,4 +53,3 @@ class Dialogue:
             self.initialize()
 
         screen.blit(self.img, (20, 20))
-
