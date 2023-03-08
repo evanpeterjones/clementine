@@ -1,12 +1,33 @@
 import pygame
 import pygame.freetype
-from Physics import Interactive
+from Physics.Visible import Visible
 
 
-class SelectableText():
-    def __init__(self, text="Close", **kwargs):
+class Text(Visible):
+    def __init__(self, text="Close", font_type='resources/Freedom-10eM.tff', **kwargs):
         super().__init__(**kwargs)
+
         self.text = text
+        self.font = pygame.font.SysFont(font_type, 24)
+        #'arial'
+
+        self.img = None
+        self.initialize()
+
+    def initialize(self):
+        # self.font = pygame.freetype.Font(font_type, self.font_size)
+        # self.font = pygame.font.SysFont(font_type, self.font_size)
+        self.img = self.font.render(self.text, True, pygame.color.Color(255, 255, 255))
+
+    def pos(self):
+        return (pygame.display.get_surface().get_size()[0]/2,
+                self.y_pos)
+
+    def draw(self, screen):
+        if self.img is None:
+            self.initialize()
+
+        screen.blit(self.img, self.pos())
 
 
 class Dialogue:
@@ -46,8 +67,8 @@ class Dialogue:
 
         return result
 
-    def update(self, screen):
+    def update(self, all_items):
         if self.img is None:
             self.initialize()
 
-        screen.blit(self.img, (20, 20))
+        pygame.screen.blit(self.img, (20, 20))
