@@ -13,6 +13,7 @@ class Interactive(Visible):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.bounce = 2
 
     def contains(self, x, y):
         '''check to see if a point exists inside bounds of self
@@ -37,32 +38,54 @@ class Interactive(Visible):
                 # compare against our right bounds
                 if i.contains(self.x_pos + self.width, self.y_pos) or \
                    i.contains(self.x_pos + self.width, self.y_pos + self.height):
-                    self.x_pos = self.x_pos - (2 * self.x_vel)
-                    self.x_vel = 0
+
+                    self.right_collision()
                     collision = True
             else:
                 # compare against right bounds of other object
                 if i.contains((self.x_pos + self.width), self.y_pos) or \
                    i.contains((self.x_pos + self.width), (self.y_pos + self.height)):
-                    self.x_pos = self.x_pos - (2 * self.x_vel)
-                    self.x_vel = 0
+
+                    self.right_collision()
                     collision = True
             if self.y_vel > 0:
                 # compare against upper bounds of other object
                 if i.contains(self.x_pos, self.y_pos) or \
                    i.contains(self.x_pos + self.width, self.y_pos):
-                    self.y_vel = 0
-                    self.y_pos = self.y_pos - (2 * self.y_vel)
+
+                    self.top_collision()
                     collision = True
             else:
                 # compare against lower bounds of other object
                 if i.contains(self.x_pos, self.y_pos + self.height) or \
                    i.contains(self.x_pos + self.width, self.y_pos + self.height):
-                    self.y_vel = 0
-                    self.y_pos = self.y_pos - (2 * self.y_vel)
+
+                    self.bottom_collision()
                     collision = True
 
+        if collision:
+            self.on_collision(all_items)
+
         return collision
+
+    def bottom_collision(self):
+        self.y_vel = 0
+        self.y_pos = self.y_pos - (self.bounce * self.y_vel)
+
+    def top_collision(self):
+        self.y_vel = 0
+        self.y_pos = self.y_pos - (self.bounce * self.y_vel)
+
+    def left_collision(self):
+        self.x_pos = self.x_pos - (self.bounce * self.x_vel)
+        self.x_vel = 0
+
+    def right_collision(self):
+        self.x_pos = self.x_pos - (self.bounce * self.x_vel)
+        self.x_vel = 0
+
+    def on_collision(self, all_items=[]):
+        pass
 
     def update(self, all_items, x_chg=0, y_chg=0, x_fric=0, y_fric=0):
         if self.collisions(all_items):

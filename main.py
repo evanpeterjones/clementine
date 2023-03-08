@@ -141,8 +141,8 @@ class Play(View):
         self.element(Player(x=400, y=200, z=0, x_acc=1, y_acc=1,
                             file_name="Images/character_sswsddddddddxxxxww.png"))
         self.element(Sprite(count=2, width=5, height=5, cursor=True))
-        self.element(Sprite(count=2, x=200, y=200, x_vel=1))
-        self.element(Sprite(count=2, x=400, y=400, y_vel=1))
+        self.element(Sprite(count=2, x=200, y=200, x_acc=2))
+        self.element(Sprite(count=2, x=400, y=400, y_acc=20))
         self.element(Map(self.screen.get_size()))
 
 

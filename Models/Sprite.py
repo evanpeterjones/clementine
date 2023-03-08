@@ -3,6 +3,7 @@ import pygame.locals as pl
 
 from Models.Particle import Particle
 from Physics.Visible import Visible
+from Physics.Interactive import Interactive
 from resources.Utils import random_color
 
 '''
@@ -10,7 +11,7 @@ Class to Generate and process a bunch of particles
 '''
 
 
-class Sprite(Visible):
+class Sprite(Interactive):
     def __init__(self, generator: Visible = Particle, count: int = 1, *args, **kwargs):
         self.__type = generator
         self.__count = count
@@ -46,3 +47,6 @@ class Sprite(Visible):
     def draw(self, screen):
         for x in self.__particles:
             x.draw(screen)
+
+    def on_collision(self, all_items):
+        self.__color = random_color()
