@@ -7,7 +7,7 @@ import sys
 from pygame.locals import *
 
 from Physics.Visible import Visible
-from System.Text import Text
+from System.Text import Label, ClickableText
 from System.Clock import Clock
 from Models.Player import Player
 from Models.Sprite import Sprite
@@ -153,14 +153,16 @@ class Pause(View):
     def __init__(self):
         super().__init__(header="Paused")
         self.element(Sprite(count=2, cursor=True))
-        self.element(Text(text="Start", y=60))
-        self.element(Text(text="Exit", y=100))
+        self.element(Label(text="Paused", y=60))
+        self.element(ClickableText(text="Start", y=100))
+        self.element(ClickableText(text="Exit", y=140))
 
 class StartScreen(View):
     def __init__(self):
         super().__init__(header="Game Start")
-        self.element(Text(text="Start", y=60))
-        self.element(Text(text="Exit", y=100))
+        self.element(Label(text="Paused", y=60))
+        self.element(ClickableText(text="Start", y=100))
+        self.element(ClickableText(text="Exit", y=140))
 
 
 if __name__ == "__main__":

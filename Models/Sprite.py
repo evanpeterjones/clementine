@@ -53,4 +53,3 @@ class Sprite(Interactive):
 
     def on_collision(self, all_items):
         self.__color = random_color()
-        #self.__particles = []

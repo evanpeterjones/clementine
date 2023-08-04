@@ -1,15 +1,15 @@
 import pygame
 import pygame.freetype
+from Physics.Interactive import Interactive
 from Physics.Visible import Visible
 
 
-class Text(Visible):
+class Label(Visible):
     def __init__(self, text="Close", font_type='resources/Freedom-10eM.tff', **kwargs):
         super().__init__(**kwargs)
 
         self.text = text
         self.font = pygame.font.SysFont(font_type, 24)
-        #'arial'
 
         self.img = None
         self.initialize()
@@ -20,7 +20,7 @@ class Text(Visible):
         self.img = self.font.render(self.text, True, pygame.color.Color(255, 255, 255))
 
     def pos(self):
-        return (pygame.display.get_surface().get_size()[0]/2,
+        return (pygame.display.get_surface().get_size()[0] / 2,
                 self.y_pos)
 
     def draw(self, screen):
@@ -28,6 +28,15 @@ class Text(Visible):
             self.initialize()
 
         screen.blit(self.img, self.pos())
+
+
+class ClickableText(Interactive, Label):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def on_collision(self, all_items=[]):
+        print(str("Over :", self.text))
+        # need to check for click/keydown
 
 
 class Dialogue:

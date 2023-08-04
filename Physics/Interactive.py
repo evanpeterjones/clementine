@@ -89,7 +89,7 @@ class Interactive(Visible):
 
     def update(self, all_items, x_chg=0, y_chg=0, x_fric=0, y_fric=0):
         if self.collisions(all_items):
-            return
+            self.on_collision(all_items=all_items)
         else:
             self.x_pos += (self.x_vel - x_fric)
             self.y_pos += (self.y_vel - y_fric)
